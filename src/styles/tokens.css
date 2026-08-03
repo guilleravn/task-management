@@ -1,0 +1,46 @@
+:root {
+  /* Colors — placeholder palette, to be aligned with the Figma design system */
+  --color-bg: #f7f7f9;
+  --color-surface: #ffffff;
+  --color-border: #e5e4e7;
+  --color-text: #1f2028;
+  --color-text-muted: #6b6375;
+  --color-primary: #ef4b4b;
+  --color-primary-hover: #d93f3f;
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-danger: #ef4444;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Typography — system fonts, per project requirements */
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-size-sm: 13px;
+  --font-size-base: 15px;
+  --font-size-md: 17px;
+  --font-size-lg: 20px;
+  --font-size-xl: 28px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --shadow-card: rgba(0, 0, 0, 0.06) 0 1px 3px, rgba(0, 0, 0, 0.04) 0 1px 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #16171d;
+    --color-surface: #1f2028;
+    --color-border: #2e303a;
+    --color-text: #f3f4f6;
+    --color-text-muted: #9ca3af;
+  }
+}
