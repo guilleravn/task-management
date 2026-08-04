@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ListIcon } from '../../../components/icons/ListIcon'
 import { GridIcon } from '../../../components/icons/GridIcon'
+import { AddButtonIcon } from '../../../components/icons/AddButtonIcon'
 import styles from './BoardToolbar.module.css'
 
 type ViewMode = 'list' | 'grid'
@@ -32,6 +33,9 @@ export function BoardToolbar() {
           <GridIcon />
         </button>
       </div>
+      <button type="button" className={styles.addButton} aria-label="Add task">
+        <AddButtonIcon />
+      </button>
     </div>
   )
 }
