@@ -1,4 +1,5 @@
 import { SearchIcon } from '../icons/SearchIcon'
+import { Avatar } from '../ui/Avatar'
 import styles from './Header.module.css'
 
 export function Header() {
@@ -12,7 +13,13 @@ export function Header() {
           className={styles.searchInput}
         />
       </div>
-      <div className={styles.actions} />
+      <div className={styles.actions}>
+        <Avatar
+          src="https://api.dicebear.com/10.x/pixel-art/svg?seed=John"
+          alt="User Avatar"
+          size="small"
+        />
+      </div>
     </header>
   )
 }
