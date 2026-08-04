@@ -3,10 +3,17 @@
   flex-shrink: 0;
   background: var(--color-surface);
   border-right: 1px solid var(--color-border);
-  padding: var(--space-4);
+  padding: var(--space-4) 0; /* antes: var(--space-4) en los 4 lados */
   display: flex;
   flex-direction: column;
 }
+
+.active {
+  color: var(--color-nav-active);
+  background: linear-gradient(90deg, transparent 0%, rgba(218, 88, 75, 0.15) 100%);
+  border-right: 3px solid var(--color-nav-active);
+}
+
 
 .logo {
   width: 40px;
@@ -30,6 +37,12 @@
   padding-left: 16px;
   border-radius: var(--radius-sm);
   color: var(--color-nav-inactive);
+}
+
+.navItem.active {
+  color: var(--color-nav-active);
+  background: linear-gradient(90deg, transparent 0%, rgba(218, 88, 75, 0.15) 100%);
+  border-right: 3px solid var(--color-nav-active);
 }
 
 

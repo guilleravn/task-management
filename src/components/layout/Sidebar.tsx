@@ -22,10 +22,16 @@ export function Sidebar() {
       <ul className={styles.nav}>
         {NAV_ITEMS.map(({ label, path, icon: Icon }) => (
           <li key={path}>
-            <NavLink to={path} className={styles.navItem}>
+            <NavLink
+              to={path}
+              className={({ isActive }) =>
+                isActive ? `${styles.navItem} ${styles.active}` : styles.navItem
+              }
+            >
               <Icon />
               <span>{label}</span>
             </NavLink>
+
           </li>
         ))}
       </ul>
