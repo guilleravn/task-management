@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { AppLayout } from '../components/layout/AppLayout'
 import { DashboardPage } from '../pages/DashboardPage'
 import { SettingsPage } from '../pages/SettingsPage'
@@ -12,10 +12,10 @@ export const router = createBrowserRouter([
     element: <AppLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <DashboardPage /> },
+      { index: true, element: <Navigate to="/dashboard" replace /> },
+      { path: 'dashboard', element: <DashboardPage /> },
+      { path: 'my-task', element: <PlaceholderPage title="My Task" /> },
       { path: 'settings', element: <SettingsPage /> },
-      { path: 'projects', element: <PlaceholderPage title="Projects" /> },
-      { path: 'team', element: <PlaceholderPage title="Team" /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },
