@@ -1,4 +1,5 @@
 import { SearchIcon } from '../icons/SearchIcon'
+import { BellIcon } from '../icons/BellIcon'
 import { Avatar } from '../ui/Avatar'
 import styles from './Header.module.css'
 
@@ -14,6 +15,7 @@ export function Header() {
         />
       </div>
       <div className={styles.actions}>
+        <BellIcon />
         <Avatar
           src="https://api.dicebear.com/10.x/pixel-art/svg?seed=John"
           alt="User Avatar"

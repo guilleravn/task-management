@@ -31,4 +31,5 @@
   align-items: center;
   gap: var(--space-4);
   flex-shrink: 0;
+  color: var(--color-text-muted);
 }

@@ -6,7 +6,7 @@ interface AvatarProps {
   size?: 'small' | 'medium' | 'large';
 }
 
-const FALLBACK_AVATAR = 'https://api.dicebear.com/10.x/pixel-art/svg?seed=fallback';
+const FALLBACK_AVATAR = 'https://api.dicebear.com/10.x/bottts/svg?seed=fallback';
 
 export function Avatar({ src, alt, size = 'medium'}: AvatarProps) {
     const [hasError, setHasError] = useState(false);
@@ -17,9 +17,11 @@ export function Avatar({ src, alt, size = 'medium'}: AvatarProps) {
         setHasError(false);
     }
 
+    const showFallback = hasError || !src;
+
     return (
         <img
-            src={hasError ? FALLBACK_AVATAR : src}
+            src={showFallback ? FALLBACK_AVATAR : src}
             alt={alt}
             width={size === 'small' ? 40 : size === 'medium' ? 64 : 128}
             height={size === 'small' ? 40 : size === 'medium' ? 64 : 128}
