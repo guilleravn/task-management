@@ -1,6 +1,7 @@
 .header {
   background: var(--color-surface);
   border-radius: 16px;
+  min-height: 64px;
   padding: 12px 24px;
   display: flex;
   align-items: center;
