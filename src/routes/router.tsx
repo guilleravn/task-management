@@ -14,9 +14,8 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/dashboard" replace /> },
       { path: 'dashboard', element: <DashboardPage /> },
+      { path: 'my-task', element: <PlaceholderPage title="My Task" /> },
       { path: 'settings', element: <SettingsPage /> },
-      { path: 'projects', element: <PlaceholderPage title="Projects" /> },
-      { path: 'team', element: <PlaceholderPage title="Team" /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },
