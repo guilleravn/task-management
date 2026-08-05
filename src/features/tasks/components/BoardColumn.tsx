@@ -9,7 +9,7 @@ export function BoardColumn({ title }: BoardColumnProps) {
   return (
     <div className={styles.column}>
       <h3 className={styles.title}>{title}</h3>
-      <TaskCard name="Example task" />
+      <TaskCard name="Example task" tags={['REACT', 'IOS']} />
     </div>
   )
 }

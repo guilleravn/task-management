@@ -1,13 +1,12 @@
 import { BoardColumn } from './BoardColumn'
+import { STATUS_VALUES, STATUS_LABELS } from '../enums'
 import styles from './BoardColumns.module.css'
-
-const COLUMNS = ['Backlog', 'Todo', 'In Progress', 'Done', 'Cancelled']
 
 export function BoardColumns() {
   return (
     <div className={styles.columns}>
-      {COLUMNS.map((title) => (
-        <BoardColumn key={title} title={title} />
+      {STATUS_VALUES.map((status) => (
+        <BoardColumn key={status} title={STATUS_LABELS[status]} />
       ))}
     </div>
   )
