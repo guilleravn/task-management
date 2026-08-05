@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client/react'
 import { BoardColumn } from './BoardColumn'
+import { BoardColumnSkeleton } from './BoardColumnSkeleton'
 import { STATUS_VALUES, STATUS_LABELS } from '../enums'
 import { GET_TASKS } from '../graphql/queries'
 import type { Task } from '../types'
@@ -14,7 +15,16 @@ export function BoardColumns() {
     variables: { input: {} },
   })
 
-  if (loading) return <p>Loading...</p>
+  if (loading) {
+    return (
+      <div className={styles.columns}>
+        {STATUS_VALUES.map((status) => (
+          <BoardColumnSkeleton key={status} title={STATUS_LABELS[status]} />
+        ))}
+      </div>
+    )
+  }
+
   if (error) return <p>Something went wrong.</p>
 
   const tasks = data?.tasks ?? []
