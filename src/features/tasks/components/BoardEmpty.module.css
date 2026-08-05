@@ -1,0 +1,13 @@
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-7);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+}
+
+.message {
+  color: var(--color-text-muted);
+  margin: 0;
+}

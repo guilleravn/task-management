@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client/react'
 import { BoardColumn } from './BoardColumn'
 import { BoardColumnSkeleton } from './BoardColumnSkeleton'
 import { BoardError } from './BoardError'
+import { BoardEmpty } from './BoardEmpty'
 import { STATUS_VALUES, STATUS_LABELS } from '../enums'
 import { GET_TASKS } from '../graphql/queries'
 import styles from './BoardColumns.module.css'
@@ -24,6 +25,8 @@ export function BoardColumns() {
   if (error) return <BoardError onRetry={() => refetch()} />
 
   const tasks = data?.tasks ?? []
+
+  if (tasks.length === 0) return <BoardEmpty />
 
   return (
     <div className={styles.columns}>
