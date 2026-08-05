@@ -1,9 +1,13 @@
 import { useState } from 'react'
+import { useMutation } from '@apollo/client/react'
+import toast from 'react-hot-toast'
 import { Modal } from '../../../components/ui/Modal'
 import { EstimatePicker } from './EstimatePicker'
 import { LabelPicker } from './LabelPicker'
 import { AssigneePicker } from './AssigneePicker'
 import { DueDatePicker } from './DueDatePicker'
+import { CREATE_TASK } from '../graphql/mutations'
+import { GET_TASKS } from '../graphql/queries'
 import type { PointEstimate, TaskTag } from '../enums'
 import type { User } from '../types'
 import styles from './CreateTaskModal.module.css'
@@ -20,8 +24,49 @@ export function CreateTaskModal({ isOpen, onClose }: CreateTaskModalProps) {
   const [assignee, setAssignee] = useState<User | null>(null)
   const [dueDate, setDueDate] = useState<Date | null>(null)
 
+  const [createTask, { loading }] = useMutation(CREATE_TASK, {
+    refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }],
+  })
+
+  function resetForm() {
+    setName('')
+    setPointEstimate(null)
+    setTags([])
+    setAssignee(null)
+    setDueDate(null)
+  }
+
+  function handleCancel() {
+    resetForm()
+    onClose()
+  }
+
+  async function handleCreate() {
+    try {
+      await createTask({
+        variables: {
+          input: {
+            name: name.trim(),
+            status: 'BACKLOG',
+            pointEstimate: pointEstimate ?? 'ZERO',
+            dueDate: (dueDate ?? new Date()).toISOString(),
+            tags,
+            assigneeId: assignee?.id,
+          },
+        },
+      })
+      toast.success('Task created')
+      resetForm()
+      onClose()
+    } catch {
+      toast.error('Could not create the task. Please try again.')
+    }
+  }
+
+  const isCreateDisabled = name.trim() === '' || loading
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={handleCancel}>
       <input
         type="text"
         value={name}
@@ -38,10 +83,15 @@ export function CreateTaskModal({ isOpen, onClose }: CreateTaskModalProps) {
       </div>
 
       <div className={styles.actions}>
-        <button type="button" onClick={onClose} className={styles.cancelButton}>
+        <button type="button" onClick={handleCancel} className={styles.cancelButton}>
           Cancel
         </button>
-        <button type="button" className={styles.createButton} disabled={name.trim() === ''}>
+        <button
+          type="button"
+          className={styles.createButton}
+          disabled={isCreateDisabled}
+          onClick={handleCreate}
+        >
           Create
         </button>
       </div>
