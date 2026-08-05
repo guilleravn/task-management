@@ -1,0 +1,74 @@
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.name {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.optionsButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  padding: var(--space-1);
+  color: var(--color-text-muted);
+}
+
+.footer {
+  margin-top: var(--space-3);
+}
+
+.tags {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  padding: 4px 16px;
+  border-radius: 4px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.points {
+  font-size: var(--font-size-sm);
+  color: #ffffff;
+}
+
+.dueDate {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-sm);
+  color: #ffffff;
+  background: color-mix(in srgb, var(--color-nav-inactive) 10%, transparent);
+  padding: 4px 10px;
+  border-radius: 4px;
+}

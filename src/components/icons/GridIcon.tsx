@@ -1,4 +1,4 @@
-export function DashboardIcon() {
+export function GridIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
       <path
