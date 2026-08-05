@@ -16,6 +16,9 @@
   --color-nav-inactive: #94979a;
   --color-nav-active: #da584b;
 
+  --color-overdue: var(--color-primary);
+  --color-due-today: var(--tag-android);
+
   --tag-android: #e5b454;
   --tag-ios: #70b252;
   --tag-node-js: #2f61bf;

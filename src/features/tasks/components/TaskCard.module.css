@@ -96,7 +96,6 @@
   align-items: center;
   gap: var(--space-1);
   font-size: var(--font-size-sm);
-  color: #ffffff;
   background: color-mix(in srgb, var(--color-nav-inactive) 10%, transparent);
   padding: 4px 10px;
   border-radius: 4px;

@@ -23,6 +23,30 @@ import {
 import type { TaskAssignee } from '../types'
 import styles from './TaskCard.module.css'
 
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+function getDueDateDisplay(dueDate: string, status: Status): { label: string; color: string } {
+  const due = new Date(dueDate)
+
+  if (status === 'DONE' || status === 'CANCELLED') {
+    return { label: formatDate(due), color: '#ffffff' }
+  }
+
+  const startOfToday = new Date()
+  startOfToday.setHours(0, 0, 0, 0)
+  const startOfDue = new Date(due)
+  startOfDue.setHours(0, 0, 0, 0)
+
+  const diffDays = Math.round((startOfToday.getTime() - startOfDue.getTime()) / 86400000)
+
+  if (diffDays === 0) return { label: 'Today', color: 'var(--color-due-today)' }
+  if (diffDays === 1) return { label: 'Yesterday', color: 'var(--color-overdue)' }
+  if (diffDays > 1) return { label: formatDate(due), color: 'var(--color-overdue)' }
+  return { label: formatDate(due), color: '#ffffff' }
+}
+
 interface TaskCardProps {
   id: string
   name: string
@@ -49,11 +73,7 @@ export function TaskCard({
     refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }],
   })
 
-  const formattedDueDate = new Date(dueDate).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
+  const dueDateDisplay = getDueDateDisplay(dueDate, status)
 
   async function handleDelete() {
     try {
@@ -110,9 +130,9 @@ export function TaskCard({
       </div>
       <div className={styles.meta}>
         <span className={styles.points}>{POINT_ESTIMATE_LABELS[pointEstimate]} Points</span>
-        <span className={styles.dueDate}>
+        <span className={styles.dueDate} style={{ color: dueDateDisplay.color }}>
           <ClockIcon />
-          {formattedDueDate}
+          {dueDateDisplay.label}
         </span>
       </div>
       <div className={styles.tags}>
