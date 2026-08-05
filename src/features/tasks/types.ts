@@ -15,3 +15,13 @@ export interface Task {
   pointEstimate: PointEstimate
   assignee: TaskAssignee | null
 }
+
+export interface FilterTaskInput {
+  assigneeId?: string
+  dueDate?: string
+  name?: string
+  ownerId?: string
+  pointEstimate?: PointEstimate
+  status?: Status
+  tags?: TaskTag[]
+}
