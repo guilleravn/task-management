@@ -45,7 +45,7 @@ export function LabelPicker({ value, onChange }: LabelPickerProps) {
     )
 
   return (
-    <Popover trigger={trigger}>
+    <Popover fullWidth trigger={trigger}>
       <p className={styles.title}>Label</p>
       <input
         type="text"

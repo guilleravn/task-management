@@ -13,7 +13,7 @@ export function EstimatePicker({ value, onChange }: EstimatePickerProps) {
   const label = value ? `${POINT_ESTIMATE_LABELS[value]} Points` : 'Estimate'
 
   return (
-    <Popover trigger={<PillButton icon={<EstimateIcon />} label={label} />}>
+    <Popover fullWidth trigger={<PillButton icon={<EstimateIcon />} label={label} />}>
       {(close) => (
         <>
           <p className={styles.title}>Estimate</p>

@@ -14,7 +14,7 @@ export function DueDatePicker({ value, onChange }: DueDatePickerProps) {
     : 'Due date'
 
   return (
-    <Popover trigger={<PillButton icon={<DueDateIcon />} label={label} />}>
+    <Popover fullWidth trigger={<PillButton icon={<DueDateIcon />} label={label} />}>
       {(close) => (
         <Calendar
           value={value}

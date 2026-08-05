@@ -3,6 +3,7 @@
   --color-page-bg: #0d0d0f;   /* fondo detrás del contenedor grande */
   --color-frame: #222528;     /* neutral 5 — el contenedor grande redondeado = fondo del sidebar y del board */
   --color-surface: #2c2f33;   /* tarjetas flotantes: header, task cards */
+  --color-menu-surface: #393d41; /* paneles flotantes de Popover (dropdowns, menú de opciones) */
   --color-border: #34363c;
   --color-text: #f3f4f6;
   --color-text-muted: #9ca3af;
