@@ -1,10 +1,10 @@
 import { TaskCard } from './TaskCard'
-import type { MockTask } from '../mock-data'
+import type { Task } from '../types'
 import styles from './BoardColumn.module.css'
 
 interface BoardColumnProps {
   title: string
-  tasks: MockTask[]
+  tasks: Task[]
 }
 
 export function BoardColumn({ title, tasks }: BoardColumnProps) {
