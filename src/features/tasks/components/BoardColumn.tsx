@@ -1,13 +1,15 @@
+import { TaskCard } from './TaskCard'
 import styles from './BoardColumn.module.css'
 
 interface BoardColumnProps {
-  title: string;
+  title: string
 }
 
 export function BoardColumn({ title }: BoardColumnProps) {
-    return (
-        <div className={styles.column}>
-            <h3 className={styles.Title}>{title}</h3>
-        </div>
-    );
+  return (
+    <div className={styles.column}>
+      <h3 className={styles.title}>{title}</h3>
+      <TaskCard name="Example task" />
+    </div>
+  )
 }
