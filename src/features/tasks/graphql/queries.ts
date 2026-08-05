@@ -1,5 +1,5 @@
 import { gql, type TypedDocumentNode } from '@apollo/client'
-import type { Task, FilterTaskInput } from '../types'
+import type { Task, FilterTaskInput, User } from '../types'
 
 export interface GetTasksResult {
   tasks: Task[]
@@ -23,6 +23,20 @@ export const GET_TASKS: TypedDocumentNode<GetTasksResult, GetTasksVariables> = g
         fullName
         avatar
       }
+    }
+  }
+`
+
+export interface GetUsersResult {
+  users: User[]
+}
+
+export const GET_USERS: TypedDocumentNode<GetUsersResult> = gql`
+  query GetUsers {
+    users {
+      id
+      fullName
+      avatar
     }
   }
 `
