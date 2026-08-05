@@ -26,3 +26,27 @@
   padding: 4px 16px;
   border-radius: 4px;
 }
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.points {
+  font-size: var(--font-size-sm);
+  color: #ffffff;
+}
+
+.dueDate {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-sm);
+  color: #ffffff;
+  background: color-mix(in srgb, var(--color-nav-inactive) 10%, transparent);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
