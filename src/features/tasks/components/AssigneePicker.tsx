@@ -29,24 +29,27 @@ export function AssigneePicker({ value, onChange }: AssigneePickerProps) {
   return (
     <Popover trigger={trigger}>
       {(close) => (
-        <ul className={styles.list}>
-          {loading && <li className={styles.loading}>Loading...</li>}
-          {users.map((user) => (
-            <li key={user.id}>
-              <button
-                type="button"
-                className={styles.option}
-                onClick={() => {
-                  onChange(user)
-                  close()
-                }}
-              >
-                <Avatar src={normalizeAvatarUrl(user.avatar)} alt={user.fullName} size="small" />
-                {user.fullName}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <>
+          <p className={styles.title}>Assign To...</p>
+          <ul className={styles.list}>
+            {loading && <li className={styles.loading}>Loading...</li>}
+            {users.map((user) => (
+              <li key={user.id}>
+                <button
+                  type="button"
+                  className={styles.option}
+                  onClick={() => {
+                    onChange(user)
+                    close()
+                  }}
+                >
+                  <Avatar src={normalizeAvatarUrl(user.avatar)} alt={user.fullName} size="small" />
+                  {user.fullName}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </Popover>
   )

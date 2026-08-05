@@ -29,7 +29,13 @@ export function Popover({ trigger, children }: PopoverProps) {
 
   return (
     <div className={styles.container} ref={containerRef}>
-      <div onClick={() => setIsOpen((current) => !current)}>{trigger}</div>
+      <button
+        type="button"
+        className={styles.trigger}
+        onClick={() => setIsOpen((current) => !current)}
+      >
+        {trigger}
+      </button>
       {isOpen && (
         <div className={styles.panel}>
           {typeof children === 'function' ? children(close) : children}

@@ -15,6 +15,7 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-md);
   padding: var(--space-1);
+  cursor: pointer;
 }
 
 .monthLabel {
@@ -45,6 +46,7 @@
   border-radius: var(--radius-sm);
   color: var(--color-text);
   font-size: var(--font-size-sm);
+  cursor: pointer;
 }
 
 .day:hover {
@@ -75,4 +77,5 @@
   font-weight: 600;
   padding: var(--space-2);
   margin-top: var(--space-2);
+  cursor: pointer;
 }

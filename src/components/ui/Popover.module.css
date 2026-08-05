@@ -1,6 +1,16 @@
 .container {
   position: relative;
-  display: inline-block;
+  width: 100%;
+}
+
+.trigger {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  user-select: none;
 }
 
 .panel {

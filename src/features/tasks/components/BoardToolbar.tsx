@@ -6,7 +6,11 @@ import styles from './BoardToolbar.module.css'
 
 type ViewMode = 'list' | 'grid'
 
-export function BoardToolbar() {
+interface BoardToolbarProps {
+  onAddClick: () => void
+}
+
+export function BoardToolbar({ onAddClick }: BoardToolbarProps) {
   const [view, setView] = useState<ViewMode>('grid')
 
   return (
@@ -33,7 +37,7 @@ export function BoardToolbar() {
           <GridIcon />
         </button>
       </div>
-      <button type="button" className={styles.addButton} aria-label="Add task">
+      <button type="button" className={styles.addButton} aria-label="Add task" onClick={onAddClick}>
         <AddButtonIcon />
       </button>
     </div>

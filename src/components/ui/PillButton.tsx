@@ -9,8 +9,8 @@ interface PillButtonProps {
 export function PillButton({ icon, label }: PillButtonProps) {
   return (
     <span className={styles.pill}>
-      {icon}
-      <span>{label}</span>
+      <span className={styles.icon}>{icon}</span>
+      <span className={styles.label}>{label}</span>
     </span>
   )
 }

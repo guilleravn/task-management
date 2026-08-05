@@ -15,22 +15,25 @@ export function EstimatePicker({ value, onChange }: EstimatePickerProps) {
   return (
     <Popover trigger={<PillButton icon={<EstimateIcon />} label={label} />}>
       {(close) => (
-        <ul className={styles.list}>
-          {POINT_ESTIMATE_VALUES.map((option) => (
-            <li key={option}>
-              <button
-                type="button"
-                className={styles.option}
-                onClick={() => {
-                  onChange(option)
-                  close()
-                }}
-              >
-                {POINT_ESTIMATE_LABELS[option]} Points
-              </button>
-            </li>
-          ))}
-        </ul>
+        <>
+          <p className={styles.title}>Estimate</p>
+          <ul className={styles.list}>
+            {POINT_ESTIMATE_VALUES.map((option) => (
+              <li key={option}>
+                <button
+                  type="button"
+                  className={styles.option}
+                  onClick={() => {
+                    onChange(option)
+                    close()
+                  }}
+                >
+                  {POINT_ESTIMATE_LABELS[option]} Points
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </Popover>
   )
