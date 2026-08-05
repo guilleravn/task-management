@@ -1,4 +1,6 @@
 import { ClockIcon } from '../../../components/icons/ClockIcon'
+import { OptionsIcon } from '../../../components/icons/OptionsIcon'
+import { Avatar } from '../../../components/ui/Avatar'
 import {
   TASK_TAG_LABELS,
   TASK_TAG_COLOR_VARS,
@@ -13,12 +15,26 @@ interface TaskCardProps {
   tags: TaskTag[]
   dueDate: string
   estimatedPoints: PointEstimate
+  assigneeName: string
+  assigneeAvatarUrl: string
 }
 
-export function TaskCard({ name, tags, dueDate, estimatedPoints }: TaskCardProps) {
+export function TaskCard({
+  name,
+  tags,
+  dueDate,
+  estimatedPoints,
+  assigneeName,
+  assigneeAvatarUrl,
+}: TaskCardProps) {
   return (
     <div className={styles.card}>
-      <h4 className={styles.name}>{name}</h4>
+      <div className={styles.header}>
+        <h4 className={styles.name}>{name}</h4>
+        <button type="button" className={styles.optionsButton} aria-label="Task options">
+          <OptionsIcon />
+        </button>
+      </div>
        <div className={styles.meta}>
         <span className={styles.points}>{POINT_ESTIMATE_LABELS[estimatedPoints]} Points</span>
         <span className={styles.dueDate}>
@@ -43,7 +59,9 @@ export function TaskCard({ name, tags, dueDate, estimatedPoints }: TaskCardProps
           )
         })}
       </div>
-     
+      <div className={styles.footer}>
+        <Avatar src={assigneeAvatarUrl} alt={assigneeName} size="small" />
+      </div>
     </div>
   )
 }

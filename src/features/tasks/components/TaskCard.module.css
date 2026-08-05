@@ -4,11 +4,33 @@
   padding: var(--space-4);
 }
 
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
 .name {
   font-size: var(--font-size-base);
   font-weight: 600;
   color: var(--color-text);
   margin: 0;
+}
+
+.optionsButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  padding: var(--space-1);
+  color: var(--color-text-muted);
+}
+
+.footer {
+  margin-top: var(--space-3);
 }
 
 .tags {
