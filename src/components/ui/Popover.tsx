@@ -4,9 +4,10 @@ import styles from './Popover.module.css'
 interface PopoverProps {
   trigger: ReactNode
   children: ReactNode | ((close: () => void) => ReactNode)
+  fullWidth?: boolean
 }
 
-export function Popover({ trigger, children }: PopoverProps) {
+export function Popover({ trigger, children, fullWidth = false }: PopoverProps) {
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -28,10 +29,13 @@ export function Popover({ trigger, children }: PopoverProps) {
   }
 
   return (
-    <div className={styles.container} ref={containerRef}>
+    <div
+      className={fullWidth ? `${styles.container} ${styles.fullWidth}` : styles.container}
+      ref={containerRef}
+    >
       <button
         type="button"
-        className={styles.trigger}
+        className={fullWidth ? `${styles.trigger} ${styles.triggerFullWidth}` : styles.trigger}
         onClick={() => setIsOpen((current) => !current)}
       >
         {trigger}

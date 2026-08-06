@@ -27,7 +27,7 @@ export function AssigneePicker({ value, onChange }: AssigneePickerProps) {
   )
 
   return (
-    <Popover trigger={trigger}>
+    <Popover fullWidth trigger={trigger}>
       {(close) => (
         <>
           <p className={styles.title}>Assign To...</p>

@@ -36,3 +36,59 @@ export const CREATE_TASK: TypedDocumentNode<CreateTaskResult, CreateTaskVariable
     }
   }
 `
+
+export interface UpdateTaskInput {
+  id: string
+  name?: string
+  status?: Status
+  tags?: TaskTag[]
+  dueDate?: string
+  pointEstimate?: PointEstimate
+  assigneeId?: string
+}
+
+export interface UpdateTaskResult {
+  updateTask: Task
+}
+
+export interface UpdateTaskVariables {
+  input: UpdateTaskInput
+}
+
+export const UPDATE_TASK: TypedDocumentNode<UpdateTaskResult, UpdateTaskVariables> = gql`
+  mutation UpdateTask($input: UpdateTaskInput!) {
+    updateTask(input: $input) {
+      id
+      name
+      status
+      tags
+      dueDate
+      pointEstimate
+      assignee {
+        id
+        fullName
+        avatar
+      }
+    }
+  }
+`
+
+export interface DeleteTaskInput {
+  id: string
+}
+
+export interface DeleteTaskResult {
+  deleteTask: Task
+}
+
+export interface DeleteTaskVariables {
+  input: DeleteTaskInput
+}
+
+export const DELETE_TASK: TypedDocumentNode<DeleteTaskResult, DeleteTaskVariables> = gql`
+  mutation DeleteTask($input: DeleteTaskInput!) {
+    deleteTask(input: $input) {
+      id
+    }
+  }
+`
