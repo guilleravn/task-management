@@ -15,7 +15,7 @@ export function BoardColumn({ title, tasks }: BoardColumnProps) {
       </h3>
       <div className={styles.cards}>
         {tasks.map((task) => (
-          <TaskCard key={task.id} {...task} />
+          <TaskCard key={task.id} task={task} />
         ))}
       </div>
     </div>
