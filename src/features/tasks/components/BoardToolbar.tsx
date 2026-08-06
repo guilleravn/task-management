@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client/react'
 import { ListIcon } from '../../../components/icons/ListIcon'
@@ -15,16 +14,16 @@ import type { PointEstimate, TaskTag } from '../enums'
 import type { User } from '../types'
 import styles from './BoardToolbar.module.css'
 
-type ViewMode = 'list' | 'grid'
+export type ViewMode = 'list' | 'grid'
 
 interface BoardToolbarProps {
   onAddClick: () => void
   onlyMine?: boolean
+  view: ViewMode
+  onViewChange: (view: ViewMode) => void
 }
 
-export function BoardToolbar({ onAddClick, onlyMine = false }: BoardToolbarProps) {
-  const [view, setView] = useState<ViewMode>('grid')
-
+export function BoardToolbar({ onAddClick, onlyMine = false, view, onViewChange }: BoardToolbarProps) {
   const [pointsFilter, setPointsFilter] = useUrlParam<PointEstimate | null>('points', {
     serialize: (value) => value ?? '',
     deserialize: (raw) => (raw as PointEstimate | null) ?? null,
@@ -84,7 +83,7 @@ export function BoardToolbar({ onAddClick, onlyMine = false }: BoardToolbarProps
             className={
               view === 'list' ? `${styles.viewButton} ${styles.active}` : styles.viewButton
             }
-            onClick={() => setView('list')}
+            onClick={() => onViewChange('list')}
           >
             <ListIcon />
           </button>
@@ -94,7 +93,7 @@ export function BoardToolbar({ onAddClick, onlyMine = false }: BoardToolbarProps
             className={
               view === 'grid' ? `${styles.viewButton} ${styles.active}` : styles.viewButton
             }
-            onClick={() => setView('grid')}
+            onClick={() => onViewChange('grid')}
           >
             <GridIcon />
           </button>
