@@ -1,5 +1,5 @@
 import { Board } from '../features/tasks/components/Board'
 
 export function MyTaskPage() {
-  return <Board />
+  return <Board onlyMine />
 }
