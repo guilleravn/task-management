@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { GridIcon } from '../icons/GridIcon'
 import { ListIcon } from '../icons/ListIcon'
+import { SettingsIcon } from '../icons/SettingsIcon'
 import logo from '../../assets/logo.png'
 import styles from './Sidebar.module.css'
 
@@ -13,6 +14,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: 'Dashboard', path: '/dashboard', icon: GridIcon },
   { label: 'My Task', path: '/my-task', icon: ListIcon },
+  { label: 'Settings', path: '/settings', icon: SettingsIcon },
 ]
 
 export function Sidebar() {
