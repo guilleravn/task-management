@@ -41,6 +41,7 @@ Delete Task:
 
 
 RESPONSIVE:
+
 <img width="438" height="863" alt="{F635CF59-6D92-4943-889A-F31549F19B66}" src="https://github.com/user-attachments/assets/b380185d-7dce-42c6-976a-df7f8aa4acd2" />
 <img width="461" height="855" alt="{67EFD0CF-71E1-451A-8B6E-F75288017213}" src="https://github.com/user-attachments/assets/0ae73d9f-2e0c-4677-9e1e-32d01f799b0b" />
 
