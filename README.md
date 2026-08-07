@@ -141,8 +141,3 @@ The split favors *what changes together*: anything specific to tasks or the user
 - List view: tasks as a table grouped by collapsible status sections, as an alternative to the Kanban grid
 - Responsive layout: the sidebar becomes a slide-out drawer, primary navigation moves to a tab bar under the header, the search field collapses to an icon, and task creation becomes a floating action button on small screens
 
-## Known limitations / not implemented
-
-- **Automated tests**: not included. Given the scope and time available, effort went into the features above instead; `getDueDateDisplay` (a pure function) would be the highest-value first test to add.
-- **Drag & drop**: not implemented — reordering tasks depends on the schema's `position` field, which wasn't wired up pending confirmation of its intended semantics.
-- **Global state via Context/Reducer**: intentionally not used — see [Rationale](#rationale). All shared UI state is modeled through the URL instead.
