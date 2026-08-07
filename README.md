@@ -62,8 +62,7 @@ RESPONSIVE:
 ### Prerequisites
 
 - Node.js 20+
-- An API access token for the challenge's GraphQL API (sent by email — check spam or ask whoever is running your interview if you didn't get it)
-
+- An API access token for the challenge's GraphQL API 
 ### Installation
 
 1. Clone the repository and install dependencies:
