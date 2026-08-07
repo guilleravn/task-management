@@ -1,6 +1,7 @@
 import { useEffect, useId, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client/react'
+import { MenuIcon } from '../icons/MenuIcon'
 import { SearchIcon } from '../icons/SearchIcon'
 import { BellIcon } from '../icons/BellIcon'
 import { Avatar } from '../ui/Avatar'
@@ -9,10 +10,15 @@ import { GET_PROFILE } from '../../features/profile/graphql/queries'
 import { useDebouncedValue } from '../../hooks/useDebouncedValue'
 import styles from './Header.module.css'
 
-export function Header() {
+interface HeaderProps {
+  onMenuClick: () => void
+}
+
+export function Header({ onMenuClick }: HeaderProps) {
   const { data } = useQuery(GET_PROFILE)
   const profile = data?.profile
 
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const searchId = useId()
   const [searchParams, setSearchParams] = useSearchParams()
   const [inputValue, setInputValue] = useState(searchParams.get('q') ?? '')
@@ -34,7 +40,16 @@ export function Header() {
 
   return (
     <header className={styles.header}>
-      <div className={styles.search}>
+      <button
+        type="button"
+        className={styles.menuButton}
+        aria-label="Open menu"
+        onClick={onMenuClick}
+      >
+        <MenuIcon />
+      </button>
+
+      <div className={isSearchOpen ? `${styles.search} ${styles.searchOpen}` : styles.search}>
         <SearchIcon />
         <label htmlFor={searchId} className={styles.visuallyHidden}>
           Search
@@ -49,6 +64,14 @@ export function Header() {
         />
       </div>
       <div className={styles.actions}>
+        <button
+          type="button"
+          className={styles.searchToggle}
+          aria-label="Toggle search"
+          onClick={() => setIsSearchOpen((prev) => !prev)}
+        >
+          <SearchIcon />
+        </button>
         <BellIcon />
         <Link to="/settings" className={styles.avatarLink} aria-label="Settings">
           <Avatar

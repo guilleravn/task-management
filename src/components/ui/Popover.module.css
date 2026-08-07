@@ -32,3 +32,8 @@
   min-width: 200px;
   padding: var(--space-2);
 }
+
+.panel.alignEnd {
+  left: auto;
+  right: 0;
+}

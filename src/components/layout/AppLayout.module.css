@@ -18,3 +18,10 @@
 .content {
   flex: 1;
 }
+
+@media (max-width: 768px) {
+  .main {
+    padding: var(--space-4);
+    gap: var(--space-3);
+  }
+}

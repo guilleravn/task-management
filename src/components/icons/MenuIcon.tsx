@@ -1,0 +1,7 @@
+export function MenuIcon() {
+  return (
+    <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
+      <path d="M0 0H20V2H0V0ZM0 6H20V8H0V6ZM0 12H20V14H0V12Z" fill="currentColor" />
+    </svg>
+  )
+}
