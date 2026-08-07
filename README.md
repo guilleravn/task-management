@@ -18,12 +18,15 @@ PAGES
 Dashboard Page:
 
 <img width="1917" height="928" alt="{B2F3330A-FFB0-4C01-AA3E-9A551DF498F2}" src="https://github.com/user-attachments/assets/413aa958-02ae-41d9-af2f-858953eaec65" />
+
 My Task Page:
 
 <img width="1899" height="927" alt="{D9F14555-AE58-4D79-B693-B0689EB45B86}" src="https://github.com/user-attachments/assets/de998998-8bd2-4bdd-a924-2ddfd83f17e0" />
+
 Settings and Profile Page:
 
 <img width="1920" height="927" alt="{548C246F-5313-4839-BB84-2429E04DDD84}" src="https://github.com/user-attachments/assets/b8305c04-0c4e-4fc2-944e-53f2c263af39" />
+
 List View:
 
 <img width="1873" height="903" alt="{461A70DC-3434-4CA2-B0B3-4D7F7855B5D0}" src="https://github.com/user-attachments/assets/67785083-d215-4393-997e-49df29a4f6fa" />
@@ -37,10 +40,12 @@ New Task:
 <img width="748" height="418" alt="{D252EC2A-0108-45FD-A6EA-553A7ACDACF8}" src="https://github.com/user-attachments/assets/22020a11-1693-4610-bc85-59eda801e5f3" />
 <img width="777" height="437" alt="{E2CE1169-52E7-4221-8E4F-5A5368DA9DE0}" src="https://github.com/user-attachments/assets/71698cd5-b4eb-4b93-9ada-9c340ccdc8c1" />
 <img width="889" height="526" alt="{A0560C54-6ACB-4A80-8C9C-C62BC25B0027}" src="https://github.com/user-attachments/assets/c11fcd57-6035-44eb-a382-01b9d99ff3f5" />
+
 Update Task
 
 <img width="507" height="231" alt="{69EC3935-6387-4BB5-A79D-893BB7F54724}" src="https://github.com/user-attachments/assets/67301588-64a4-44fe-8bcb-7b7b444060f1" />
 <img width="742" height="288" alt="{3AF75CB5-12C6-4A9A-B283-14001916C849}" src="https://github.com/user-attachments/assets/e86ba21e-4601-45b8-a050-06517e66b2ba" />
+
 Delete Task:
 
 <img width="493" height="241" alt="{8ED350B4-95D4-4E51-9315-DE89C13BBD28}" src="https://github.com/user-attachments/assets/1730e052-6b81-464b-9c43-a9784984400b" />
