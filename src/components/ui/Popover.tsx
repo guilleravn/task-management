@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, type ReactNode } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect, type ReactNode } from 'react'
 import styles from './Popover.module.css'
 
 interface PopoverProps {
@@ -9,7 +9,9 @@ interface PopoverProps {
 
 export function Popover({ trigger, children, fullWidth = false }: PopoverProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [alignEnd, setAlignEnd] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!isOpen) return
@@ -24,6 +26,18 @@ export function Popover({ trigger, children, fullWidth = false }: PopoverProps) 
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isOpen])
 
+  useLayoutEffect(() => {
+    if (!isOpen || !panelRef.current) return
+    const rect = panelRef.current.getBoundingClientRect()
+    setAlignEnd(rect.right > window.innerWidth)
+  }, [isOpen])
+
+  function toggleOpen() {
+    const next = !isOpen
+    setIsOpen(next)
+    if (next) setAlignEnd(false)
+  }
+
   function close() {
     setIsOpen(false)
   }
@@ -36,12 +50,15 @@ export function Popover({ trigger, children, fullWidth = false }: PopoverProps) 
       <button
         type="button"
         className={fullWidth ? `${styles.trigger} ${styles.triggerFullWidth}` : styles.trigger}
-        onClick={() => setIsOpen((current) => !current)}
+        onClick={toggleOpen}
       >
         {trigger}
       </button>
       {isOpen && (
-        <div className={styles.panel}>
+        <div
+          ref={panelRef}
+          className={alignEnd ? `${styles.panel} ${styles.alignEnd}` : styles.panel}
+        >
           {typeof children === 'function' ? children(close) : children}
         </div>
       )}
