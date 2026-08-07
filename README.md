@@ -11,7 +11,6 @@ A Kanban-style task management app built as a take-home challenge. It connects t
 - [Tech stack](#tech-stack)
 - [Rationale](#rationale)
 - [Features](#features)
-- [Known limitations / not implemented](#known-limitations--not-implemented)
 
 ## Screenshots
 PAGES
