@@ -17,26 +17,35 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Settings', path: '/settings', icon: SettingsIcon },
 ]
 
-export function Sidebar() {
-  return (
-    <aside className={styles.sidebar}>
-      <img src={logo} alt="Logo" className={styles.logo} />
-      <ul className={styles.nav}>
-        {NAV_ITEMS.map(({ label, path, icon: Icon }) => (
-          <li key={path}>
-            <NavLink
-              to={path}
-              className={({ isActive }) =>
-                isActive ? `${styles.navItem} ${styles.active}` : styles.navItem
-              }
-            >
-              <Icon />
-              <span>{label}</span>
-            </NavLink>
+interface SidebarProps {
+  isOpen: boolean
+  onClose: () => void
+}
 
-          </li>
-        ))}
-      </ul>
-    </aside>
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
+  return (
+    <>
+      {isOpen && <div className={styles.backdrop} onClick={onClose} />}
+      <aside className={isOpen ? `${styles.sidebar} ${styles.open}` : styles.sidebar}>
+        <img src={logo} alt="Logo" className={styles.logo} />
+        <ul className={styles.nav}>
+          {NAV_ITEMS.map(({ label, path, icon: Icon }) => (
+            <li key={path}>
+              <NavLink
+                to={path}
+                onClick={onClose}
+                className={({ isActive }) =>
+                  isActive ? `${styles.navItem} ${styles.active}` : styles.navItem
+                }
+              >
+                <Icon />
+                <span>{label}</span>
+              </NavLink>
+
+            </li>
+          ))}
+        </ul>
+      </aside>
+    </>
   )
 }

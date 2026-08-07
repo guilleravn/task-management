@@ -63,3 +63,17 @@
 .clearButton:hover {
   color: var(--color-text);
 }
+
+@media (max-width: 768px) {
+  .start {
+    display: none;
+  }
+
+  .addButton {
+    position: fixed;
+    bottom: var(--space-5);
+    right: var(--space-5);
+    z-index: 30;
+    filter: drop-shadow(var(--shadow-card));
+  }
+}
