@@ -14,8 +14,36 @@ A Kanban-style task management app built as a take-home challenge. It connects t
 - [Known limitations / not implemented](#known-limitations--not-implemented)
 
 ## Screenshots
+PAGES
+Dashboard Page:
+<img width="1917" height="928" alt="{B2F3330A-FFB0-4C01-AA3E-9A551DF498F2}" src="https://github.com/user-attachments/assets/413aa958-02ae-41d9-af2f-858953eaec65" />
+My Task Page:
+<img width="1899" height="927" alt="{D9F14555-AE58-4D79-B693-B0689EB45B86}" src="https://github.com/user-attachments/assets/de998998-8bd2-4bdd-a924-2ddfd83f17e0" />
+Settings and Profile Page:
+<img width="1920" height="927" alt="{548C246F-5313-4839-BB84-2429E04DDD84}" src="https://github.com/user-attachments/assets/b8305c04-0c4e-4fc2-944e-53f2c263af39" />
+List View:
+<img width="1873" height="903" alt="{461A70DC-3434-4CA2-B0B3-4D7F7855B5D0}" src="https://github.com/user-attachments/assets/67785083-d215-4393-997e-49df29a4f6fa" />
 
-<!-- TODO: add screenshots/gifs of the dashboard (grid + list view), task create/edit, filters, and the mobile responsive layout. -->
+
+MODALS:
+New Task:
+<img width="891" height="393" alt="{82ECE2F8-46A7-40FA-9FB0-A12E56F18048}" src="https://github.com/user-attachments/assets/7c79b19c-fe10-4231-b7fe-22185dad57e7" />
+<img width="735" height="400" alt="{AF46844C-BE90-4420-9FA1-A3DB35644403}" src="https://github.com/user-attachments/assets/6b21a29b-269e-472b-b257-73269fac2783" />
+<img width="748" height="418" alt="{D252EC2A-0108-45FD-A6EA-553A7ACDACF8}" src="https://github.com/user-attachments/assets/22020a11-1693-4610-bc85-59eda801e5f3" />
+<img width="777" height="437" alt="{E2CE1169-52E7-4221-8E4F-5A5368DA9DE0}" src="https://github.com/user-attachments/assets/71698cd5-b4eb-4b93-9ada-9c340ccdc8c1" />
+<img width="889" height="526" alt="{A0560C54-6ACB-4A80-8C9C-C62BC25B0027}" src="https://github.com/user-attachments/assets/c11fcd57-6035-44eb-a382-01b9d99ff3f5" />
+Update Task
+<img width="507" height="231" alt="{69EC3935-6387-4BB5-A79D-893BB7F54724}" src="https://github.com/user-attachments/assets/67301588-64a4-44fe-8bcb-7b7b444060f1" />
+<img width="742" height="288" alt="{3AF75CB5-12C6-4A9A-B283-14001916C849}" src="https://github.com/user-attachments/assets/e86ba21e-4601-45b8-a050-06517e66b2ba" />
+Delete Task:
+<img width="493" height="241" alt="{8ED350B4-95D4-4E51-9315-DE89C13BBD28}" src="https://github.com/user-attachments/assets/1730e052-6b81-464b-9c43-a9784984400b" />
+<img width="715" height="152" alt="{67C84374-CB7C-4394-B8B8-896D4DF2E01C}" src="https://github.com/user-attachments/assets/2d84297c-0f89-4e37-8a4d-b8996877ad94" />
+
+
+RESPONSIVE:
+<img width="438" height="863" alt="{F635CF59-6D92-4943-889A-F31549F19B66}" src="https://github.com/user-attachments/assets/b380185d-7dce-42c6-976a-df7f8aa4acd2" />
+<img width="461" height="855" alt="{67EFD0CF-71E1-451A-8B6E-F75288017213}" src="https://github.com/user-attachments/assets/0ae73d9f-2e0c-4677-9e1e-32d01f799b0b" />
+
 
 ## Setup / running the app
 
