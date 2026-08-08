@@ -1,5 +1,5 @@
 import { Board } from '../features/tasks/components/Board'
 
-export function DashboardPage() {
-  return <Board />
+export function MyTaskPage() {
+  return <Board onlyMine />
 }

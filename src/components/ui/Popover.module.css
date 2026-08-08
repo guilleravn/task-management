@@ -1,0 +1,39 @@
+.container {
+  position: relative;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.trigger {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  user-select: none;
+}
+
+.triggerFullWidth {
+  display: flex;
+  width: 100%;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 50;
+  background: var(--color-menu-surface);
+  border: 1px solid var(--color-nav-inactive);
+  border-radius: 8px;
+  box-shadow: var(--shadow-card);
+  min-width: 200px;
+  padding: var(--space-2);
+}
+
+.panel.alignEnd {
+  left: auto;
+  right: 0;
+}

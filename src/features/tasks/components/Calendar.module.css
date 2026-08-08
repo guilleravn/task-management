@@ -1,0 +1,81 @@
+.calendar {
+  width: 280px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.header button {
+  border: none;
+  background: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-md);
+  padding: var(--space-1);
+  cursor: pointer;
+}
+
+.monthLabel {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.weekdays,
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekdays span {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  padding: var(--space-1) 0;
+}
+
+.day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.day:hover {
+  background: var(--color-frame);
+}
+
+.outsideMonth {
+  color: var(--color-text-muted);
+  opacity: 0.5;
+}
+
+.selected {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.today {
+  border: 1px solid var(--color-primary);
+}
+
+.todayButton {
+  display: block;
+  width: 100%;
+  text-align: center;
+  border: none;
+  background: none;
+  color: var(--color-primary);
+  font-weight: 600;
+  padding: var(--space-2);
+  margin-top: var(--space-2);
+  cursor: pointer;
+}

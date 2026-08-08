@@ -1,7 +1,5 @@
+import { ProfileCard } from '../features/profile/components/ProfileCard'
+
 export function SettingsPage() {
-  return (
-    <div>
-      <h1>Settings</h1>
-    </div>
-  )
+  return <ProfileCard />
 }
