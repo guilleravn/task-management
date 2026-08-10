@@ -28,6 +28,7 @@ export const CREATE_TASK: TypedDocumentNode<CreateTaskResult, CreateTaskVariable
       tags
       dueDate
       pointEstimate
+      position
       assignee {
         id
         fullName
@@ -44,6 +45,7 @@ export interface UpdateTaskInput {
   tags?: TaskTag[]
   dueDate?: string
   pointEstimate?: PointEstimate
+  position?: number
   assigneeId?: string
 }
 
@@ -64,6 +66,7 @@ export const UPDATE_TASK: TypedDocumentNode<UpdateTaskResult, UpdateTaskVariable
       tags
       dueDate
       pointEstimate
+      position
       assignee {
         id
         fullName

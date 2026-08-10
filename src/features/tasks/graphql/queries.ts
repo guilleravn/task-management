@@ -18,6 +18,7 @@ export const GET_TASKS: TypedDocumentNode<GetTasksResult, GetTasksVariables> = g
       tags
       dueDate
       pointEstimate
+      position
       assignee {
         id
         fullName
