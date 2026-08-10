@@ -15,6 +15,7 @@ export interface Task {
   tags: TaskTag[]
   dueDate: string
   pointEstimate: PointEstimate
+  position: number
   assignee: TaskAssignee | null
 }
 

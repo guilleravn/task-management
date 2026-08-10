@@ -13,8 +13,11 @@ export function BoardColumns({ tasks }: BoardColumnsProps) {
       {STATUS_VALUES.map((status) => (
         <BoardColumn
           key={status}
+          status={status}
           title={STATUS_LABELS[status]}
-          tasks={tasks.filter((task) => task.status === status)}
+          tasks={tasks
+            .filter((task) => task.status === status)
+            .sort((a, b) => a.position - b.position)}
         />
       ))}
     </div>
