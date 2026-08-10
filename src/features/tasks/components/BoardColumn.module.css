@@ -13,4 +13,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  min-height: 40px;
+  border-radius: var(--radius-md);
+  transition: background-color 0.15s ease;
+}
+
+.cards.isOver {
+  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
 }
