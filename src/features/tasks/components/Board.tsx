@@ -44,6 +44,7 @@ export function Board({ onlyMine = false }: BoardProps) {
   const name = searchParams.get('q') || undefined
 
   const {
+    status: statusFilter,
     points: pointsFilter,
     tags: tagsFilter,
     dueDate: dueDateFilter,
@@ -61,6 +62,7 @@ export function Board({ onlyMine = false }: BoardProps) {
       input: {
         name,
         assigneeId,
+        status: statusFilter ?? undefined,
         pointEstimate: pointsFilter ?? undefined,
         tags: tagsFilter.length > 0 ? tagsFilter : undefined,
         dueDate: dueDateFilter?.toISOString(),
@@ -70,6 +72,9 @@ export function Board({ onlyMine = false }: BoardProps) {
   })
 
   const tasks = data?.tasks ?? []
+  // With a status filter only that column/group is shown, so a drag can only reorder within it
+  // and can never move a task out of the filtered list.
+  const visibleStatuses = statusFilter ? [statusFilter] : STATUS_VALUES
 
   const moveTask = useMoveTask()
 
@@ -127,7 +132,11 @@ export function Board({ onlyMine = false }: BoardProps) {
 
     if (tasks.length === 0) return <BoardEmpty />
 
-    return view === 'list' ? <BoardList tasks={tasks} /> : <BoardColumns tasks={tasks} />
+    return view === 'list' ? (
+      <BoardList tasks={tasks} statuses={visibleStatuses} />
+    ) : (
+      <BoardColumns tasks={tasks} statuses={visibleStatuses} />
+    )
   }
 
   return (

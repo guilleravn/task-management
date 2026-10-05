@@ -126,8 +126,9 @@ anyone who loads the app.
 4. Tasks render grouped by `STATUS_VALUES` in `BoardColumns` (grid) or `BoardList` (list).
 
 ### Filters
-`BoardToolbar` pickers write `points`, `tags`, `dueDate`, `assigneeId` through
+`BoardToolbar` pickers write `status`, `points`, `tags`, `dueDate`, `assigneeId` through
 `useTaskFilters()`. `Board` reads them through the same hook and maps them to `FilterTaskInput`.
+With a `status` filter, the grid and the list show only that status's column or group.
 The hook validates every value coming from the URL, so invalid params are ignored (R1).
 "Clear filters" calls the hook's `clear()`, which deletes every filter param (not `q`).
 
