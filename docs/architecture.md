@@ -89,6 +89,14 @@ from the cache.
    cache `update`) — the normalized cache doesn't add/remove list items on its own (R9).
 6. Await mutations in `try/catch` with toasts, and disable the trigger while `loading`.
 
+## Deployment
+
+The app is deployed to Vercel as a static build (`dist/`). Because routing happens on the client
+(`createBrowserRouter`), `vercel.json` rewrites every path to `/index.html`. Without it, loading a
+deep route directly (e.g. opening `/settings` in a new tab) returns Vercel's 404 page. Vercel
+serves files that exist in `dist/` (JS, CSS, images) before applying rewrites, so assets are not
+affected.
+
 ## Environment variables
 
 Defined in `.env` (gitignored), documented in `.env.example`. Only `VITE_`-prefixed variables are
