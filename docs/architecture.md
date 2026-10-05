@@ -156,9 +156,3 @@ is sent (R5).
   `--color-on-time`. Shared by `TaskCard` and `BoardListRow`.
 - `features/tasks/reorderPosition.ts` — midpoint position for drag and drop.
 - `lib/dicebear.ts` — legacy avatar URL rewrite (R11).
-
-## Known loose ends (as of this doc)
-
-- `README.md` says the grid/list toggle lives in the URL; it is `useState` in `Board`.
-- `README.md` lists `ErrorBoundary` under `components/ui/`; it is at
-  `components/ErrorBoundary.tsx`.

@@ -57,3 +57,13 @@ Each slice must pass `npm run build` and `npm run lint` before it's committed.
 
 **Never `git push`** unless the user explicitly asks for it at that moment. Approval to commit is
 not approval to push, and approval to push once is not approval to push again later.
+
+## Between slices
+
+After a slice is committed, stop. The user pushes the branch, opens the PR, approves it and
+merges it into `develop`. Start the next slice only once the merge is confirmed, from a freshly
+pulled `develop` — so every slice starts clean and includes the previous one.
+
+If the user explicitly asks for several slices in one go, stack the branches instead: each slice
+branches from the previous slice's branch. Merging the PRs into `develop` in order then shows
+only that slice's commit in each PR.
