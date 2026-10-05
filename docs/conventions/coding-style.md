@@ -14,7 +14,7 @@ src/
   routes/         Router configuration (router.tsx)
   pages/          Thin route components — one per route
   features/       Domain code, grouped by domain
-    tasks/          components/, graphql/, types.ts, enums.ts, pure helpers
+    tasks/          components/, graphql/, hooks/, types.ts, enums.ts, pure helpers
     profile/        components/, graphql/, types.ts, enums.ts
   components/     Shared, cross-feature building blocks
     layout/         AppLayout, Header, Sidebar, MobileTabBar
@@ -77,8 +77,9 @@ This is why the grid and list views share all data and filtering logic. When add
 make it another presentational component fed by `Board`; don't give it its own `GET_TASKS`.
 
 Not every component follows this split, and that's intended: leaf components that own a
-self-contained interaction run their own mutation (`TaskActionsMenu` → `DELETE_TASK`,
-`EditTaskModal` → `UPDATE_TASK`, `CreateTaskModal` → `CREATE_TASK`), and pickers that need a
+self-contained interaction run their own mutation through the feature's mutation hooks
+(`TaskActionsMenu` → `useDeleteTask`, `EditTaskModal` → `useUpdateTask`,
+`CreateTaskModal` → `useCreateTask`; see invariant R9), and pickers that need a
 lookup list run it themselves (`AssigneePicker` → `GET_USERS`). Apollo deduplicates and caches,
 so this doesn't cost extra requests.
 

@@ -113,9 +113,9 @@ optimistic update (R5) depends on this too.
    midpoint of the neighbours, `after - 1` at the top, `before + 1` at the bottom, `0` in an
    empty column. Positions are fractional numbers.
 4. If neither status nor position changed, nothing is sent.
-5. Exactly **one** `updateTask` is sent with `{ id, status, position }` and an
-   `optimisticResponse` built by spreading the cached task:
-   `{ updateTask: { ...draggedTask, status, position } }`.
+5. Exactly **one** `updateTask` is sent, through `useMoveTask` (`hooks/useTaskMutations.ts`),
+   with `{ id, status, position }` and an `optimisticResponse` built by spreading the cached
+   task: `{ updateTask: { ...task, status, position } }`. It does not refetch (R9).
 6. On failure: `toast.error(...)`. There is no manual rollback.
 
 **Protects.** The card moves instantly, a reorder costs one request, and failure is safe:
@@ -194,25 +194,43 @@ duplicated).
 
 ---
 
-## R9 — Mutations that add or remove tasks must refresh the task list
+## R9 — Task mutations refresh every active task list, from one place
 
-**Requires.** `CREATE_TASK`, `UPDATE_TASK` (from `EditTaskModal`) and `DELETE_TASK` declare
-`refetchQueries` for `GET_TASKS`. Every mutation is awaited in `try/catch` with a success and an
-error toast.
+**Requires.** Components never call `useMutation` for tasks directly. They use the hooks in
+`src/features/tasks/hooks/useTaskMutations.ts`, which own the refresh strategy:
 
-**Protects.** A created or deleted task isn't something the normalized cache can merge into an
-existing list on its own. Without the refetch the board doesn't show new tasks and keeps showing
-deleted ones.
+| Hook | Used by | Refresh |
+| --- | --- | --- |
+| `useCreateTask` | `CreateTaskModal` | `refetchQueries: [GET_TASKS]` |
+| `useUpdateTask` | `EditTaskModal` | `refetchQueries: [GET_TASKS]` |
+| `useDeleteTask` | `TaskActionsMenu` | `cache.evict` + `cache.gc()`, then `refetchQueries: [GET_TASKS]` |
+| `useMoveTask` | `Board` (drag and drop) | none — optimistic normalized update (R5) |
 
-**Known gap.** Today the refetch is `{ query: GET_TASKS, variables: { input: {} } }` — the
-unfiltered list only. When a search, filter, or "My Task" is active, the visible query has
-different variables and is **not** refetched, so creates/deletes don't show up until the
-filters change. Status/field edits still show up, because the cache updates `Task:<id>` (R4).
-Fixing this (e.g. refetching active `GET_TASKS` queries, or cache `update`/`evict`) is a
-pending decision.
+Passing the **document** (`[GET_TASKS]`) refetches every *active* `GetTasks` query with its own
+variables. Never use the `{ query, variables }` form, which only refetches that one variable set.
+Every mutation is awaited in `try/catch` with a success and an error toast.
 
-**Breaks when.** A new mutation that creates or removes tasks is added without any refetch or
-cache update.
+**Protects.** Apollo caches one list per variable set (search, filters, "My Task"). The
+normalized cache can update a task that is already in a list, but it can't decide whether a
+task should **enter or leave** a filtered list — only the server knows how its filters match:
+- create: the new task must appear in every list whose filters it matches;
+- edit: changing tags, estimate, due date or assignee can move a task in or out of a filtered
+  list;
+- delete: the task must disappear from every list. Eviction does that immediately; the refetch
+  confirms.
+
+Writing created tasks into the cache by hand was rejected: it would mean re-implementing the
+server's filter semantics (e.g. how `name` search matches) on the client.
+
+**Breaks when.**
+- A component calls `useMutation(CREATE_TASK | UPDATE_TASK | DELETE_TASK)` directly: it bypasses
+  the strategy and filtered boards go stale again.
+- The refetch is changed to `{ query: GET_TASKS, variables: { input: {} } }`: only the unfiltered
+  list refreshes; with a search or filter active, created tasks don't appear and deleted/edited
+  ones linger.
+- A refetch is added to `useMoveTask`: every drag triggers a network round-trip and the list
+  flickers while the optimistic result is replaced.
+- A new task mutation is added without deciding its refresh strategy in the hooks file.
 
 ---
 

@@ -1,13 +1,11 @@
 import { useState } from 'react'
-import { useMutation } from '@apollo/client/react'
 import toast from 'react-hot-toast'
 import { Modal } from '../../../components/ui/Modal'
 import { EstimatePicker } from './EstimatePicker'
 import { LabelPicker } from './LabelPicker'
 import { AssigneePicker } from './AssigneePicker'
 import { DueDatePicker } from './DueDatePicker'
-import { CREATE_TASK } from '../graphql/mutations'
-import { GET_TASKS } from '../graphql/queries'
+import { useCreateTask } from '../hooks/useTaskMutations'
 import type { PointEstimate, TaskTag } from '../enums'
 import type { User } from '../types'
 import styles from './CreateTaskModal.module.css'
@@ -24,9 +22,7 @@ export function CreateTaskModal({ isOpen, onClose }: CreateTaskModalProps) {
   const [assignee, setAssignee] = useState<User | null>(null)
   const [dueDate, setDueDate] = useState<Date | null>(null)
 
-  const [createTask, { loading }] = useMutation(CREATE_TASK, {
-    refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }],
-  })
+  const [createTask, { loading }] = useCreateTask()
 
   function resetForm() {
     setName('')

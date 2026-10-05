@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useMutation } from '@apollo/client/react'
 import toast from 'react-hot-toast'
 import { OptionsIcon } from '../../../components/icons/OptionsIcon'
 import { PencilIcon } from '../../../components/icons/PencilIcon'
@@ -7,8 +6,7 @@ import { TrashIcon } from '../../../components/icons/TrashIcon'
 import { Popover } from '../../../components/ui/Popover'
 import { EditTaskModal } from './EditTaskModal'
 import { DeleteConfirmModal } from './DeleteConfirmModal'
-import { DELETE_TASK } from '../graphql/mutations'
-import { GET_TASKS } from '../graphql/queries'
+import { useDeleteTask } from '../hooks/useTaskMutations'
 import type { Task } from '../types'
 import styles from './TaskActionsMenu.module.css'
 
@@ -20,9 +18,7 @@ export function TaskActionsMenu({ task }: TaskActionsMenuProps) {
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
 
-  const [deleteTask, { loading: isDeleting }] = useMutation(DELETE_TASK, {
-    refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }],
-  })
+  const [deleteTask, { loading: isDeleting }] = useDeleteTask()
 
   async function handleDelete() {
     try {
