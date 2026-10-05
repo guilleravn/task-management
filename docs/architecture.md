@@ -70,9 +70,12 @@ export const apolloClient = new ApolloClient({ link: httpLink, cache: new InMemo
 | `GetTasks($input: FilterTaskInput!)` | `features/tasks/graphql/queries.ts` | `Board` |
 | `GetUsers` | `features/tasks/graphql/queries.ts` | `AssigneePicker`, `BoardToolbar` |
 | `GetProfile` | `features/profile/graphql/queries.ts` | `Header`, `Board` (My Task), `ProfileCard` |
-| `CreateTask($input: CreateTaskInput!)` | `features/tasks/graphql/mutations.ts` | `CreateTaskModal` |
-| `UpdateTask($input: UpdateTaskInput!)` | `features/tasks/graphql/mutations.ts` | `EditTaskModal`, `Board` (drag and drop) |
-| `DeleteTask($input: DeleteTaskInput!)` | `features/tasks/graphql/mutations.ts` | `TaskActionsMenu` |
+| `CreateTask($input: CreateTaskInput!)` | `features/tasks/graphql/mutations.ts` | `useCreateTask` → `CreateTaskModal` |
+| `UpdateTask($input: UpdateTaskInput!)` | `features/tasks/graphql/mutations.ts` | `useUpdateTask` → `EditTaskModal`; `useMoveTask` → `Board` (drag and drop) |
+| `DeleteTask($input: DeleteTaskInput!)` | `features/tasks/graphql/mutations.ts` | `useDeleteTask` → `TaskActionsMenu` |
+
+Task mutations are only called through the hooks in `features/tasks/hooks/useTaskMutations.ts`,
+which own how task lists are refreshed (R9).
 
 `GET_PROFILE` is used by three components but hits the network once: the other two read it
 from the cache.
@@ -85,8 +88,10 @@ from the cache.
 3. If it returns `Task`, select the full task field set (R4).
 4. Update `types.ts` by hand to match the selection — nothing generates or validates it against
    the schema.
-5. If it creates or removes entities, decide how lists get refreshed (`refetchQueries` or a
-   cache `update`) — the normalized cache doesn't add/remove list items on its own (R9).
+5. For a task mutation, add a hook to `features/tasks/hooks/useTaskMutations.ts` and decide its
+   refresh strategy there (R9). If it can add, remove, or move tasks between filtered lists, it
+   needs `refetchQueries: [GET_TASKS]` — the normalized cache doesn't add or remove list items on
+   its own.
 6. Await mutations in `try/catch` with toasts, and disable the trigger while `loading`.
 
 ## Deployment
@@ -130,8 +135,10 @@ four params (not `q`).
 runs with `assigneeId = profile.id` (R7).
 
 ### Create / edit / delete
-The modal or menu runs its mutation, awaits it, shows a toast and refetches the unfiltered
-`GET_TASKS` (R9, including its known gap). Edits also update `Task:<id>` in the cache directly.
+The modal or menu calls its hook from `useTaskMutations.ts`, awaits it and shows a toast. The
+hook refetches every active `GetTasks` query, so the visible board is refreshed whatever
+search or filters are applied. Delete also evicts `Task:<id>` from the cache first, so the card
+disappears immediately (R9).
 
 ### Drag and drop (grid view)
 `DndContext` lives in `Board`; each `BoardColumn` is a droppable (id = status) with a

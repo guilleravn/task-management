@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useMutation, useQuery } from '@apollo/client/react'
+import { useQuery } from '@apollo/client/react'
 import { useSearchParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import {
@@ -26,7 +26,7 @@ import { useUrlParam } from '../../../hooks/useUrlParam'
 import { getReorderedPosition } from '../reorderPosition'
 import { STATUS_VALUES, STATUS_LABELS, type PointEstimate, type TaskTag, type Status } from '../enums'
 import { GET_TASKS } from '../graphql/queries'
-import { UPDATE_TASK } from '../graphql/mutations'
+import { useMoveTask } from '../hooks/useTaskMutations'
 import { GET_PROFILE } from '../../profile/graphql/queries'
 import type { Task } from '../types'
 import styles from './Board.module.css'
@@ -84,7 +84,7 @@ export function Board({ onlyMine = false }: BoardProps) {
 
   const tasks = data?.tasks ?? []
 
-  const [updateTask] = useMutation(UPDATE_TASK)
+  const moveTask = useMoveTask()
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -120,12 +120,7 @@ export function Board({ onlyMine = false }: BoardProps) {
 
     if (draggedTask.status === overStatus && draggedTask.position === newPosition) return
 
-    updateTask({
-      variables: { input: { id: draggedTask.id, status: overStatus, position: newPosition } },
-      optimisticResponse: {
-        updateTask: { ...draggedTask, status: overStatus, position: newPosition },
-      },
-    }).catch(() => {
+    moveTask(draggedTask, overStatus, newPosition).catch(() => {
       toast.error('Could not move the task. Please try again.')
     })
   }

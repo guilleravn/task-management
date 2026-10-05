@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useMutation } from '@apollo/client/react'
 import toast from 'react-hot-toast'
 import { Modal } from '../../../components/ui/Modal'
 import { EstimatePicker } from './EstimatePicker'
@@ -7,8 +6,7 @@ import { LabelPicker } from './LabelPicker'
 import { AssigneePicker } from './AssigneePicker'
 import { DueDatePicker } from './DueDatePicker'
 import { StatusPicker } from './StatusPicker'
-import { UPDATE_TASK } from '../graphql/mutations'
-import { GET_TASKS } from '../graphql/queries'
+import { useUpdateTask } from '../hooks/useTaskMutations'
 import type { Status, TaskTag, PointEstimate } from '../enums'
 import type { TaskAssignee } from '../types'
 import styles from './EditTaskModal.module.css'
@@ -36,9 +34,7 @@ export function EditTaskModal({ task, onClose }: EditTaskModalProps) {
   const [assignee, setAssignee] = useState<TaskAssignee | null>(task.assignee)
   const [dueDate, setDueDate] = useState<Date | null>(new Date(task.dueDate))
 
-  const [updateTask, { loading }] = useMutation(UPDATE_TASK, {
-    refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }],
-  })
+  const [updateTask, { loading }] = useUpdateTask()
 
   async function handleSave() {
     try {
