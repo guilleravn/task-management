@@ -57,14 +57,24 @@ refresh and on navigation. That is the current behavior, not part of this rule.
 
 ## R2 — Search is debounced before it reaches the URL
 
-**Requires.** `Header` keeps the input in local state and writes `q` only from
-`useDebouncedValue(inputValue, 300)` — 300 ms after the last keystroke.
+**Requires.** `Header` keeps the input in local state. Its `onChange` updates that state
+immediately and calls a debounced writer (`useDebouncedCallback`, 300 ms) that sets `q` in the
+URL — so `q` changes only 300 ms after the last keystroke. There is no effect syncing the input
+to the URL.
+
+In the other direction, when `q` changes from outside the input (back/forward, navigating to a
+link without `q`), `Header` adjusts the input during render by comparing `q` to the last value
+it saw.
 
 **Protects.** `q` is a `GET_TASKS` variable. Without the debounce, every keystroke changes the
-query variables and fires a network request.
+query variables and fires a network request. The URL → input sync keeps the box from showing a
+search that isn't applied.
 
-**Breaks when.** The input writes to the URL directly in `onChange`, or `Board` reads the raw
-input instead of `q`: one request per character, and responses can arrive out of order.
+**Breaks when.**
+- `onChange` writes to the URL directly, or `Board` reads the raw input instead of `q`: one
+  request per character, and responses can arrive out of order.
+- The sync is moved back into a `useEffect` on the debounced value: the effect writes the URL on
+  mount for no reason, and the input stops following outside URL changes.
 
 ---
 

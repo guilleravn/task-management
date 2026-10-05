@@ -21,7 +21,7 @@ src/
     ui/             Modal, Popover, Avatar, PillButton
     icons/          One SVG component per icon
     ErrorBoundary.tsx
-  hooks/          Generic hooks with no domain knowledge (useUrlParam, useDebouncedValue)
+  hooks/          Generic hooks with no domain knowledge (useUrlParam, useDebouncedCallback)
   styles/         tokens.css (design tokens) and global.css (reset/base)
 ```
 

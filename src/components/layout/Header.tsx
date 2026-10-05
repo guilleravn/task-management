@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react'
+import { useId, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client/react'
 import { MenuIcon } from '../icons/MenuIcon'
@@ -7,7 +7,7 @@ import { BellIcon } from '../icons/BellIcon'
 import { Avatar } from '../ui/Avatar'
 import { normalizeAvatarUrl } from '../../lib/dicebear'
 import { GET_PROFILE } from '../../features/profile/graphql/queries'
-import { useDebouncedValue } from '../../hooks/useDebouncedValue'
+import { useDebouncedCallback } from '../../hooks/useDebouncedCallback'
 import styles from './Header.module.css'
 
 interface HeaderProps {
@@ -21,14 +21,21 @@ export function Header({ onMenuClick }: HeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const searchId = useId()
   const [searchParams, setSearchParams] = useSearchParams()
-  const [inputValue, setInputValue] = useState(searchParams.get('q') ?? '')
-  const debouncedValue = useDebouncedValue(inputValue, 300)
+  const q = searchParams.get('q') ?? ''
+  const [inputValue, setInputValue] = useState(q)
+  const [lastSeenQ, setLastSeenQ] = useState(q)
 
-  useEffect(() => {
+  // When `q` changes from outside the input (back/forward, a link without `q`), show it.
+  if (q !== lastSeenQ) {
+    setLastSeenQ(q)
+    setInputValue(q)
+  }
+
+  const writeSearchToUrl = useDebouncedCallback((value: string) => {
     setSearchParams(
       (params) => {
-        if (debouncedValue) {
-          params.set('q', debouncedValue)
+        if (value) {
+          params.set('q', value)
         } else {
           params.delete('q')
         }
@@ -36,7 +43,12 @@ export function Header({ onMenuClick }: HeaderProps) {
       },
       { replace: true },
     )
-  }, [debouncedValue, setSearchParams])
+  }, 300)
+
+  function handleSearchChange(value: string) {
+    setInputValue(value)
+    writeSearchToUrl(value)
+  }
 
   return (
     <header className={styles.header}>
@@ -58,7 +70,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           id={searchId}
           type="text"
           value={inputValue}
-          onChange={(event) => setInputValue(event.target.value)}
+          onChange={(event) => handleSearchChange(event.target.value)}
           placeholder="Search"
           className={styles.searchInput}
         />
