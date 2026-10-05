@@ -2,12 +2,17 @@
 
 ## Branches
 
-- `main` is the integration branch. `develop` exists and has been used as an intermediate
-  branch (`feat/*` → `develop` → `main` through PRs).
+Changes flow in one direction: `feat/*` (and other work branches) → `develop` → `main`.
+
+- **`develop`** is the integration branch. Every work branch is created from `develop` and
+  merged back into `develop` through a PR.
+- **`main`** only receives `develop`, once everything planned is in `develop`. That merge is a
+  release step done by the user — never open or merge a PR into `main` on your own.
 - Work happens on a short-lived branch named by intent: `feat/<thing>`, `fix/<thing>`,
-  `docs/<thing>`, `refactor/<thing>`, `chore/<thing>`.
-- Branch from an **up-to-date** base: fetch first and make sure your local base isn't behind its
-  remote before branching.
+  `docs/<thing>`, `refactor/<thing>`, `chore/<thing>`. One branch and one PR per slice.
+- Branch from an **up-to-date** `develop`: `git fetch` first and fast-forward local `develop` to
+  `origin/develop` before branching.
+- Once a work branch is merged, it can be deleted locally.
 
 ## Plan before you build
 
