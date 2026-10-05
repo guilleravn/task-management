@@ -156,7 +156,7 @@ export function Board({ onlyMine = false }: BoardProps) {
         {renderContent()}
         <DragOverlay>{activeTask && <TaskCard task={activeTask} />}</DragOverlay>
       </DndContext>
-      <CreateTaskModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} />
+      {isCreateModalOpen && <CreateTaskModal onClose={() => setIsCreateModalOpen(false)} />}
     </div>
   )
 }

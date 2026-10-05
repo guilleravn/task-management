@@ -83,6 +83,13 @@ self-contained interaction run their own mutation through the feature's mutation
 lookup list run it themselves (`AssigneePicker` → `GET_USERS`). Apollo deduplicates and caches,
 so this doesn't cost extra requests.
 
+### Create and edit share `TaskForm`
+
+`CreateTaskModal` and `EditTaskModal` are thin wrappers: `Modal` + `TaskForm` + their mutation
+hook. `TaskForm` owns the fields, the picker row, the actions, and the shaping into
+`TaskFormInput` (trimmed name, `ZERO` estimate and today's date as defaults). A new task field is
+added once, in `TaskForm`; the wrappers only supply initial values and the submit handler.
+
 ## Enums: `as const` arrays, not TypeScript `enum`
 
 ```ts
@@ -182,7 +189,9 @@ a `KeyboardSensor`. Keep this level when adding UI.
 
 ### Modals
 
-Every dialog goes through `components/ui/Modal`, never a hand-rolled overlay. `Modal`:
+Every dialog goes through `components/ui/Modal`, never a hand-rolled overlay. It has no `isOpen`
+prop: callers mount it conditionally (`{isOpen && <SomeModal … />}`), so closing unmounts it and
+any form state inside starts fresh next time. `Modal`:
 
 - renders into `document.body` with `createPortal`;
 - sets `role="dialog"`, `aria-modal="true"` and `aria-label` from its required `ariaLabel` prop
