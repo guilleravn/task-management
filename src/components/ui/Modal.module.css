@@ -18,3 +18,8 @@
   flex-direction: column;
   gap: var(--space-5);
 }
+
+/* Focus lands on the dialog container itself when it opens; it is not an interactive control. */
+.dialog:focus {
+  outline: none;
+}
