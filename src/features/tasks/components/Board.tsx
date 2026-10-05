@@ -22,11 +22,11 @@ import { BoardEmpty } from './BoardEmpty'
 import { BoardToolbar, type ViewMode } from './BoardToolbar'
 import { CreateTaskModal } from './CreateTaskModal'
 import { TaskCard } from './TaskCard'
-import { useUrlParam } from '../../../hooks/useUrlParam'
 import { getReorderedPosition } from '../reorderPosition'
-import { STATUS_VALUES, STATUS_LABELS, type PointEstimate, type TaskTag, type Status } from '../enums'
+import { STATUS_VALUES, STATUS_LABELS, type Status } from '../enums'
 import { GET_TASKS } from '../graphql/queries'
 import { useMoveTask } from '../hooks/useTaskMutations'
+import { useTaskFilters } from '../hooks/useTaskFilters'
 import { GET_PROFILE } from '../../profile/graphql/queries'
 import type { Task } from '../types'
 import styles from './Board.module.css'
@@ -43,25 +43,12 @@ export function Board({ onlyMine = false }: BoardProps) {
   const [searchParams] = useSearchParams()
   const name = searchParams.get('q') || undefined
 
-  const [pointsFilter] = useUrlParam<PointEstimate | null>('points', {
-    serialize: (value) => value ?? '',
-    deserialize: (raw) => (raw as PointEstimate | null) ?? null,
-  })
-
-  const [tagsFilter] = useUrlParam<TaskTag[]>('tags', {
-    serialize: (value) => value.join(','),
-    deserialize: (raw) => (raw ? (raw.split(',') as TaskTag[]) : []),
-  })
-
-  const [dueDateFilter] = useUrlParam<Date | null>('dueDate', {
-    serialize: (value) => value?.toISOString() ?? '',
-    deserialize: (raw) => (raw ? new Date(raw) : null),
-  })
-
-  const [urlAssigneeId] = useUrlParam<string | null>('assigneeId', {
-    serialize: (value) => value ?? '',
-    deserialize: (raw) => raw || null,
-  })
+  const {
+    points: pointsFilter,
+    tags: tagsFilter,
+    dueDate: dueDateFilter,
+    assigneeId: urlAssigneeId,
+  } = useTaskFilters()
 
   const { data: profileData, loading: profileLoading } = useQuery(GET_PROFILE, {
     skip: !onlyMine,

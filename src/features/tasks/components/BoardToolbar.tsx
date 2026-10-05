@@ -1,16 +1,14 @@
-import { useSearchParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client/react'
 import { ListIcon } from '../../../components/icons/ListIcon'
 import { GridIcon } from '../../../components/icons/GridIcon'
 import { AddButtonIcon } from '../../../components/icons/AddButtonIcon'
 import { ResetIcon } from '../../../components/icons/ResetIcon'
-import { useUrlParam } from '../../../hooks/useUrlParam'
 import { EstimatePicker } from './EstimatePicker'
 import { LabelPicker } from './LabelPicker'
 import { DueDatePicker } from './DueDatePicker'
 import { AssigneePicker } from './AssigneePicker'
 import { GET_USERS } from '../graphql/queries'
-import type { PointEstimate, TaskTag } from '../enums'
+import { useTaskFilters } from '../hooks/useTaskFilters'
 import type { User } from '../types'
 import styles from './BoardToolbar.module.css'
 
@@ -24,25 +22,17 @@ interface BoardToolbarProps {
 }
 
 export function BoardToolbar({ onAddClick, onlyMine = false, view, onViewChange }: BoardToolbarProps) {
-  const [pointsFilter, setPointsFilter] = useUrlParam<PointEstimate | null>('points', {
-    serialize: (value) => value ?? '',
-    deserialize: (raw) => (raw as PointEstimate | null) ?? null,
-  })
-
-  const [tagsFilter, setTagsFilter] = useUrlParam<TaskTag[]>('tags', {
-    serialize: (value) => value.join(','),
-    deserialize: (raw) => (raw ? (raw.split(',') as TaskTag[]) : []),
-  })
-
-  const [dueDateFilter, setDueDateFilter] = useUrlParam<Date | null>('dueDate', {
-    serialize: (value) => value?.toISOString() ?? '',
-    deserialize: (raw) => (raw ? new Date(raw) : null),
-  })
-
-  const [assigneeIdFilter, setAssigneeIdFilter] = useUrlParam<string | null>('assigneeId', {
-    serialize: (value) => value ?? '',
-    deserialize: (raw) => raw || null,
-  })
+  const {
+    points: pointsFilter,
+    setPoints: setPointsFilter,
+    tags: tagsFilter,
+    setTags: setTagsFilter,
+    dueDate: dueDateFilter,
+    setDueDate: setDueDateFilter,
+    assigneeId: assigneeIdFilter,
+    setAssigneeId: setAssigneeIdFilter,
+    clear: clearFilters,
+  } = useTaskFilters()
 
   const { data: usersData } = useQuery(GET_USERS, { skip: onlyMine })
   const users = usersData?.users ?? []
@@ -57,21 +47,6 @@ export function BoardToolbar({ onAddClick, onlyMine = false, view, onViewChange 
     tagsFilter.length > 0 ||
     dueDateFilter !== null ||
     (!onlyMine && assigneeIdFilter !== null)
-
-  const [, setSearchParams] = useSearchParams()
-
-  function handleClearFilters() {
-    setSearchParams(
-      (params) => {
-        params.delete('points')
-        params.delete('tags')
-        params.delete('dueDate')
-        params.delete('assigneeId')
-        return params
-      },
-      { replace: true },
-    )
-  }
 
   return (
     <div className={styles.toolbar}>
@@ -107,7 +82,7 @@ export function BoardToolbar({ onAddClick, onlyMine = false, view, onViewChange 
             <AssigneePicker value={assigneeFilterUser} onChange={handleAssigneeChange} />
           )}
           {hasActiveFilters && (
-            <button type="button" className={styles.clearButton} onClick={handleClearFilters}>
+            <button type="button" className={styles.clearButton} onClick={clearFilters}>
               <ResetIcon />
               Clear filters
             </button>
