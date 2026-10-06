@@ -37,7 +37,7 @@
   cursor: pointer;
 }
 
-.createButton {
+.submitButton {
   border: none;
   background: var(--color-primary);
   color: #ffffff;
@@ -47,7 +47,7 @@
   cursor: pointer;
 }
 
-.createButton:disabled {
+.submitButton:disabled {
   background: var(--color-primary-disabled);
   cursor: not-allowed;
 }

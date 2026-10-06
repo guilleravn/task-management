@@ -3,25 +3,14 @@ import { createPortal } from 'react-dom'
 import styles from './Modal.module.css'
 
 interface ModalProps {
-  isOpen: boolean
   onClose: () => void
   ariaLabel: string
   children: ReactNode
 }
 
-export function Modal({ isOpen, onClose, ariaLabel, children }: ModalProps) {
-  if (!isOpen) return null
-
-  return (
-    <ModalDialog onClose={onClose} ariaLabel={ariaLabel}>
-      {children}
-    </ModalDialog>
-  )
-}
-
-type ModalDialogProps = Omit<ModalProps, 'isOpen'>
-
-function ModalDialog({ onClose, ariaLabel, children }: ModalDialogProps) {
+// Render it conditionally (`{isOpen && <Modal …/>}`): mounting moves focus in, unmounting
+// restores it and resets any form state inside.
+export function Modal({ onClose, ariaLabel, children }: ModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
