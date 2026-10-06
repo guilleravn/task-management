@@ -11,6 +11,7 @@ A Kanban-style task management app built as a take-home challenge. It connects t
 - [Tech stack](#tech-stack)
 - [Rationale](#rationale)
 - [Features](#features)
+- [Decisions on challenge requirements](#decisions-on-challenge-requirements)
 
 ## Screenshots
 PAGES
@@ -101,15 +102,17 @@ RESPONSIVE:
 
 ```
 src/
-  components/       # Generic, reusable, no business logic
+  components/       # Shared building blocks
     layout/          # AppLayout, Header, Sidebar, MobileTabBar
-    ui/              # Popover, Modal, Avatar, PillButton, ErrorBoundary
+    ui/              # Popover, Modal, Avatar, PillButton
     icons/           # One SVG component per icon
+    ErrorBoundary.tsx
   features/         # Domain logic, grouped by feature
-    tasks/           # Board, TaskCard, filters/pickers, GraphQL queries & mutations, enums, types
+    tasks/           # Board, TaskCard, TaskForm, filters/pickers, GraphQL documents,
+                     # hooks (useTaskFilters, useTaskMutations), enums, types
     profile/         # Profile card, GraphQL queries, enums, types
   pages/            # Thin route components that delegate to features
-  hooks/            # Generic reusable hooks (useDebouncedValue, useUrlParam)
+  hooks/            # Generic reusable hooks (useUrlParam, useDebouncedCallback)
   lib/              # Infra: Apollo Client setup, Dicebear avatar helper
   routes/           # React Router configuration
   styles/           # Design tokens and global styles
@@ -122,15 +125,15 @@ The split favors *what changes together*: anything specific to tasks or the user
 - **React 19 + TypeScript** — UI and type safety across components, hooks and GraphQL data.
 - **Vite** — dev server and build tooling.
 - **Apollo Client** (`@apollo/client`) — GraphQL queries/mutations, cache and loading/error state, using the `TypedDocumentNode<TData, TVariables>` pattern so every query/mutation is typed end-to-end without manual generics.
-- **React Router** — routing, plus `useSearchParams` as the mechanism for shareable, deep-linkable UI state (filters, search, view).
+- **React Router** — routing, plus `useSearchParams` as the mechanism for shareable, deep-linkable UI state (search and filters).
 - **CSS Modules** — component-scoped styles, backed by a small set of design tokens (`src/styles/tokens.css`) for color, spacing, typography and radius.
 - **react-hot-toast** — lightweight success/error feedback for mutations.
 - **ESLint + typescript-eslint** — linting, including the `react-hooks` plugin's stricter rules (e.g. flags `setState` calls inside effects).
 
 ## Rationale
 
-- **Apollo Client over raw `fetch`**: the API is GraphQL, and Apollo gives normalized caching and `refetchQueries` for free, which is what invalidates the task list after a create/update/delete mutation without any manual cache bookkeeping.
-- **URL search params instead of Context/Redux for shared UI state**: search, filters (points, tags, due date, assignee) and the grid/list toggle all live in the URL via a small generic `useUrlParam<T>` hook. This keeps state shareable via link, durable across refreshes, and avoids introducing a global state library for what is, in the end, page-local UI state shared between a couple of sibling components.
+- **Apollo Client over raw `fetch`**: the API is GraphQL, and Apollo gives a normalized cache and `refetchQueries`. All task mutations go through `useTaskMutations` hooks: create and edit refetch every *active* task list (whatever search or filters it was run with), delete also evicts the task from the cache, and drag and drop relies on an optimistic update with no refetch.
+- **URL search params instead of Context/Redux for shared UI state**: the search and the filters (status, points, tags, due date, assignee) live in the URL, read and written through `useTaskFilters` (built on a small generic `useUrlParam<T>` hook). Values coming from the URL are validated, so a hand-edited link can't break the board. This keeps filtered views shareable via link and durable across refreshes, without a global state library. The grid/list toggle is plain component state and resets on refresh.
 - **Container vs. presentational split for the board**: `Board` owns the `GET_TASKS` query, filter reading and loading/error/empty states; `BoardColumns` and `BoardList` are purely presentational (`tasks: Task[]` in, JSX out). This is what let the list-view bonus reuse the exact same data and filtering logic as the grid view with zero duplication.
 - **Shared `TaskActionsMenu` and `getDueDateDisplay`**: the options menu (Edit/Delete) and the due-date color logic are each implemented once and reused by both the Kanban card and the list row, instead of being re-implemented per view.
 - **Enums as `const` arrays instead of TS `enum`**: `STATUS_VALUES`, `TASK_TAG_VALUES`, etc. are `as const` arrays with a derived union type, paired with `_LABELS` records for display text. This keeps the values iterable (for rendering filter options, board columns, etc.) while staying just as type-safe as a real enum.
@@ -141,7 +144,7 @@ The split favors *what changes together*: anything specific to tasks or the user
 **Core**
 - Browse tasks in a Kanban board, grouped by status
 - Create, edit and delete tasks (name, status, tags, due date, point estimate, assignee)
-- Search by name, and filter by point estimate, tags, due date and assignee
+- Search by name, and filter by status, point estimate, tags, due date and assignee
 - "My Task" view (tasks assigned to the current user)
 - User profile / settings page
 
@@ -150,4 +153,10 @@ The split favors *what changes together*: anything specific to tasks or the user
 - Due date colored by delay: green (on time), yellow (less than 2 days left), red (overdue) — shared between the grid and list views
 - List view: tasks as a table grouped by collapsible status sections, as an alternative to the Kanban grid
 - Responsive layout: the sidebar becomes a slide-out drawer, primary navigation moves to a tab bar under the header, the search field collapses to an icon, and task creation becomes a floating action button on small screens
+- Drag and drop in the grid view: reorder tasks within a column or move them between columns, with an optimistic update that rolls back on error
+
+## Decisions on challenge requirements
+
+- **Task `position` is set by drag and drop, not in the edit modal.** The challenge lists position among the editable fields; here it is controlled by dragging a card, which computes a position between its neighbours. The edit modal covers name, status, tags, due date, points and assignee.
+- **The profile page does not show `position`.** `GET_PROFILE` requests fullName, email, type, createdAt and updatedAt. Whether the API's `User` type exposes a `position` field is still to be checked against the schema; if it does, it will be added to the query and the profile card.
 
