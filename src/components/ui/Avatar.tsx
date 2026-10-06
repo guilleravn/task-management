@@ -1,32 +1,34 @@
-import { useState } from 'react';
+import { useState } from 'react'
+import styles from './Avatar.module.css'
 
 interface AvatarProps {
-  src: string;
-  alt: string;
-  size?: 'small' | 'medium' | 'large';
+  src: string
+  alt: string
+  size?: 'small' | 'medium' | 'large'
 }
 
-const FALLBACK_AVATAR = 'https://api.dicebear.com/10.x/bottts/svg?seed=fallback';
+const FALLBACK_AVATAR = 'https://api.dicebear.com/10.x/bottts/svg?seed=fallback'
 
-export function Avatar({ src, alt, size = 'medium'}: AvatarProps) {
-    const [hasError, setHasError] = useState(false);
-    const [lastSrc, setLastSrc] = useState(src);
+const SIZE_PX = {
+  small: 40,
+  medium: 64,
+  large: 128,
+}
 
-    if (src !== lastSrc) {
-        setLastSrc(src);
-        setHasError(false);
-    }
+export function Avatar({ src, alt, size = 'medium' }: AvatarProps) {
+  // Remembering which src failed (rather than a boolean) means a new src is retried
+  // automatically, without resetting state during render.
+  const [failedSrc, setFailedSrc] = useState<string | null>(null)
+  const showFallback = !src || failedSrc === src
 
-    const showFallback = hasError || !src;
-
-    return (
-        <img
-            src={showFallback ? FALLBACK_AVATAR : src}
-            alt={alt}
-            width={size === 'small' ? 40 : size === 'medium' ? 64 : 128}
-            height={size === 'small' ? 40 : size === 'medium' ? 64 : 128}
-            style={{ borderRadius: '50%' , objectFit: 'cover' }}
-            onError={() => setHasError(true)}
-            />
-    );
+  return (
+    <img
+      src={showFallback ? FALLBACK_AVATAR : src}
+      alt={alt}
+      width={SIZE_PX[size]}
+      height={SIZE_PX[size]}
+      className={styles.avatar}
+      onError={() => setFailedSrc(src)}
+    />
+  )
 }

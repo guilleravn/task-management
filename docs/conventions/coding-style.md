@@ -136,8 +136,10 @@ values and callbacks at build time.
 - The compiler depends on components following the Rules of React (pure render, no mutating
   props/state, hooks at the top level). `eslint-plugin-react-hooks` v7 (recommended flat config)
   enforces these — treat its errors as real bugs, not noise.
-- Adjusting state when a prop changes is done during render, not in an effect (see `Avatar`,
-  which compares `src` to `lastSrc`).
+- Prefer state that doesn't need resetting: `Avatar` stores *which* `src` failed
+  (`failedSrc === src`), so a new `src` is retried with no reset at all.
+- When state really must follow an outside value, adjust it during render, not in an effect
+  (see `Header`, which compares the URL's `q` to `lastSeenQ`).
 
 ## TypeScript
 
@@ -146,7 +148,8 @@ values and callbacks at build time.
   (`import { gql, type TypedDocumentNode } from '@apollo/client'`).
 - ESLint forbids `any` (`no-explicit-any: error`) and `@ts-ignore`/`@ts-expect-error`
   (`ban-ts-comment: error`). Unused args are allowed only with a `_` prefix.
-- Casting is used only at trust boundaries, e.g. URL param deserializers (`raw as PointEstimate`).
+- Don't cast untrusted input (URL params) to domain types; validate it instead (`isOneOf()` in
+  `features/tasks/enums.ts`, see invariant R1).
 
 ## Styling: CSS Modules + design tokens
 
@@ -169,8 +172,7 @@ values and callbacks at build time.
 ## Formatting
 
 No Prettier config exists. Match the surrounding code: 2-space indent, single quotes, no
-semicolons, trailing commas in multi-line literals. (`Avatar.tsx` deviates — 4 spaces and
-semicolons — and is the exception, not the norm.)
+semicolons, trailing commas in multi-line literals.
 
 ## User feedback
 
