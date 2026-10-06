@@ -159,8 +159,6 @@ is sent (R5).
 
 ## Known loose ends (as of this doc)
 
-- `features/tasks/mock-data.ts` is not imported anywhere (dead code from before the API was
-  wired).
 - `README.md` says the grid/list toggle lives in the URL; it is `useState` in `Board`.
 - `README.md` lists `ErrorBoundary` under `components/ui/`; it is at
   `components/ErrorBoundary.tsx`.
