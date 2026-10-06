@@ -14,14 +14,14 @@ src/
   routes/         Router configuration (router.tsx)
   pages/          Thin route components — one per route
   features/       Domain code, grouped by domain
-    tasks/          components/, graphql/, types.ts, enums.ts, pure helpers
+    tasks/          components/, graphql/, hooks/, types.ts, enums.ts, pure helpers
     profile/        components/, graphql/, types.ts, enums.ts
   components/     Shared, cross-feature building blocks
     layout/         AppLayout, Header, Sidebar, MobileTabBar
     ui/             Modal, Popover, Avatar, PillButton
     icons/          One SVG component per icon
     ErrorBoundary.tsx
-  hooks/          Generic hooks with no domain knowledge (useUrlParam, useDebouncedValue)
+  hooks/          Generic hooks with no domain knowledge (useUrlParam, useDebouncedCallback)
   styles/         tokens.css (design tokens) and global.css (reset/base)
 ```
 
@@ -77,10 +77,18 @@ This is why the grid and list views share all data and filtering logic. When add
 make it another presentational component fed by `Board`; don't give it its own `GET_TASKS`.
 
 Not every component follows this split, and that's intended: leaf components that own a
-self-contained interaction run their own mutation (`TaskActionsMenu` → `DELETE_TASK`,
-`EditTaskModal` → `UPDATE_TASK`, `CreateTaskModal` → `CREATE_TASK`), and pickers that need a
+self-contained interaction run their own mutation through the feature's mutation hooks
+(`TaskActionsMenu` → `useDeleteTask`, `EditTaskModal` → `useUpdateTask`,
+`CreateTaskModal` → `useCreateTask`; see invariant R9), and pickers that need a
 lookup list run it themselves (`AssigneePicker` → `GET_USERS`). Apollo deduplicates and caches,
 so this doesn't cost extra requests.
+
+### Create and edit share `TaskForm`
+
+`CreateTaskModal` and `EditTaskModal` are thin wrappers: `Modal` + `TaskForm` + their mutation
+hook. `TaskForm` owns the fields, the picker row, the actions, and the shaping into
+`TaskFormInput` (trimmed name, `ZERO` estimate and today's date as defaults). A new task field is
+added once, in `TaskForm`; the wrappers only supply initial values and the submit handler.
 
 ## Enums: `as const` arrays, not TypeScript `enum`
 
@@ -128,8 +136,10 @@ values and callbacks at build time.
 - The compiler depends on components following the Rules of React (pure render, no mutating
   props/state, hooks at the top level). `eslint-plugin-react-hooks` v7 (recommended flat config)
   enforces these — treat its errors as real bugs, not noise.
-- Adjusting state when a prop changes is done during render, not in an effect (see `Avatar`,
-  which compares `src` to `lastSrc`).
+- Prefer state that doesn't need resetting: `Avatar` stores *which* `src` failed
+  (`failedSrc === src`), so a new `src` is retried with no reset at all.
+- When state really must follow an outside value, adjust it during render, not in an effect
+  (see `Header`, which compares the URL's `q` to `lastSeenQ`).
 
 ## TypeScript
 
@@ -138,7 +148,8 @@ values and callbacks at build time.
   (`import { gql, type TypedDocumentNode } from '@apollo/client'`).
 - ESLint forbids `any` (`no-explicit-any: error`) and `@ts-ignore`/`@ts-expect-error`
   (`ban-ts-comment: error`). Unused args are allowed only with a `_` prefix.
-- Casting is used only at trust boundaries, e.g. URL param deserializers (`raw as PointEstimate`).
+- Don't cast untrusted input (URL params) to domain types; validate it instead (`isOneOf()` in
+  `features/tasks/enums.ts`, see invariant R1).
 
 ## Styling: CSS Modules + design tokens
 
@@ -161,8 +172,7 @@ values and callbacks at build time.
 ## Formatting
 
 No Prettier config exists. Match the surrounding code: 2-space indent, single quotes, no
-semicolons, trailing commas in multi-line literals. (`Avatar.tsx` deviates — 4 spaces and
-semicolons — and is the exception, not the norm.)
+semicolons, trailing commas in multi-line literals.
 
 ## User feedback
 
@@ -178,3 +188,21 @@ semicolons — and is the exception, not the norm.)
 Icon-only buttons have `aria-label`; decorative SVGs are `aria-hidden`; the search input has a
 visually-hidden `<label>`; collapsible list groups set `aria-expanded`; drag and drop registers
 a `KeyboardSensor`. Keep this level when adding UI.
+
+### Modals
+
+Every dialog goes through `components/ui/Modal`, never a hand-rolled overlay. It has no `isOpen`
+prop: callers mount it conditionally (`{isOpen && <SomeModal … />}`), so closing unmounts it and
+any form state inside starts fresh next time. `Modal`:
+
+- renders into `document.body` with `createPortal`;
+- sets `role="dialog"`, `aria-modal="true"` and `aria-label` from its required `ariaLabel` prop
+  (e.g. "Create task", "Edit task", "Delete task");
+- closes on Escape (a `keydown` listener on `document`, removed in the effect cleanup) and on an
+  overlay click;
+- moves focus into the dialog when it opens and returns it to the previously focused element when
+  it closes;
+- stops `pointerdown` from propagating (see invariant R5).
+
+It does not trap focus: Tab can still leave the dialog. `Popover`'s `close()` returns focus to its
+trigger, which is what a modal opened from a menu option restores focus to.

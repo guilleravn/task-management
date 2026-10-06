@@ -1,16 +1,17 @@
 import { BoardColumn } from './BoardColumn'
-import { STATUS_VALUES, STATUS_LABELS } from '../enums'
+import { STATUS_LABELS, type Status } from '../enums'
 import type { Task } from '../types'
 import styles from './BoardColumns.module.css'
 
 interface BoardColumnsProps {
   tasks: Task[]
+  statuses: readonly Status[]
 }
 
-export function BoardColumns({ tasks }: BoardColumnsProps) {
+export function BoardColumns({ tasks, statuses }: BoardColumnsProps) {
   return (
     <div className={styles.columns}>
-      {STATUS_VALUES.map((status) => (
+      {statuses.map((status) => (
         <BoardColumn
           key={status}
           status={status}

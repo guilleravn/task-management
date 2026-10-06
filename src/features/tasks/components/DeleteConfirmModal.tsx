@@ -15,7 +15,7 @@ export function DeleteConfirmModal({
   onCancel,
 }: DeleteConfirmModalProps) {
   return (
-    <Modal isOpen onClose={onCancel}>
+    <Modal onClose={onCancel} ariaLabel="Delete task">
       <p className={styles.message}>
         Are you sure you want to delete <strong>{taskName}</strong>? This action cannot be undone.
       </p>

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useLayoutEffect, type ReactNode } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect, useId, type ReactNode } from 'react'
 import styles from './Popover.module.css'
 
 interface PopoverProps {
@@ -12,6 +12,7 @@ export function Popover({ trigger, children, fullWidth = false }: PopoverProps) 
   const [alignEnd, setAlignEnd] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  const triggerId = useId()
 
   useEffect(() => {
     if (!isOpen) return
@@ -38,8 +39,12 @@ export function Popover({ trigger, children, fullWidth = false }: PopoverProps) 
     if (next) setAlignEnd(false)
   }
 
+  // Choosing an option unmounts the panel, so hand focus back to the trigger. A modal opened
+  // from the option (Edit/Delete) then has a focused element to restore when it closes.
+  // Looked up by id rather than a ref because `close` is handed to children during render.
   function close() {
     setIsOpen(false)
+    document.getElementById(triggerId)?.focus()
   }
 
   return (
@@ -48,6 +53,7 @@ export function Popover({ trigger, children, fullWidth = false }: PopoverProps) 
       ref={containerRef}
     >
       <button
+        id={triggerId}
         type="button"
         className={fullWidth ? `${styles.trigger} ${styles.triggerFullWidth}` : styles.trigger}
         onClick={toggleOpen}
