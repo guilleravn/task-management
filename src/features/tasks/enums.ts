@@ -1,4 +1,9 @@
-export const STATUS_VALUES = ['BACKLOG', 'TODO', 'IN_PROGRESS', 'DONE', 'CANCELLED'] as const
+// Narrows untrusted input (e.g. a URL param) to one of an enum's values.
+export function isOneOf<T extends string>(values: readonly T[], raw: string | null): raw is T {
+  return raw !== null && (values as readonly string[]).includes(raw)
+}
+
+export const STATUS_VALUES =['BACKLOG', 'TODO', 'IN_PROGRESS', 'DONE', 'CANCELLED'] as const
 export type Status = (typeof STATUS_VALUES)[number]
 
 export const STATUS_LABELS: Record<Status, string> = {

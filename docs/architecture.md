@@ -126,9 +126,10 @@ anyone who loads the app.
 4. Tasks render grouped by `STATUS_VALUES` in `BoardColumns` (grid) or `BoardList` (list).
 
 ### Filters
-`BoardToolbar` pickers write `points`, `tags`, `dueDate`, `assigneeId` with `useUrlParam`.
-`Board` reads the same keys and maps them to `FilterTaskInput`. "Clear filters" deletes those
-four params (not `q`).
+`BoardToolbar` pickers write `points`, `tags`, `dueDate`, `assigneeId` through
+`useTaskFilters()`. `Board` reads them through the same hook and maps them to `FilterTaskInput`.
+The hook validates every value coming from the URL, so invalid params are ignored (R1).
+"Clear filters" calls the hook's `clear()`, which deletes every filter param (not `q`).
 
 ### My Task
 `Board onlyMine` runs `GET_PROFILE`; `GET_TASKS` is skipped until the profile id exists, then

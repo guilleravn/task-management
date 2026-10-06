@@ -13,20 +13,23 @@ code.
 
 **Requires.** Search and board filters live only in the URL search params:
 
-| Param | Written by | Read by | Format |
-| --- | --- | --- | --- |
-| `q` | `Header` (debounced, see R2) | `Board` | raw string |
-| `points` | `BoardToolbar` | `Board`, `BoardToolbar` | a `PointEstimate` value |
-| `tags` | `BoardToolbar` | `Board`, `BoardToolbar` | comma-separated `TaskTag` values |
-| `dueDate` | `BoardToolbar` | `Board`, `BoardToolbar` | ISO string (`Date.toISOString()`) |
-| `assigneeId` | `BoardToolbar` | `Board`, `BoardToolbar` | user id |
+| Param | Written by | Read by | Format | Invalid value → |
+| --- | --- | --- | --- | --- |
+| `q` | `Header` (debounced, see R2) | `Board` | raw string | — |
+| `points` | `BoardToolbar` | `Board`, `BoardToolbar` | a `PointEstimate` value | `null` |
+| `tags` | `BoardToolbar` | `Board`, `BoardToolbar` | comma-separated `TaskTag` values | unknown tags dropped, duplicates removed |
+| `dueDate` | `BoardToolbar` | `Board`, `BoardToolbar` | ISO string (`Date.toISOString()`) | `null` |
+| `assigneeId` | `BoardToolbar` | `Board`, `BoardToolbar` | user id | `null` if empty |
 
-Components read and write them through `useSearchParams` / `useUrlParam`. Updates use
-`{ replace: true }` and the functional form `setSearchParams(params => …)`. An empty serialized
-value deletes the param.
+The filter params (everything except `q`) are read and written **only** through
+`useTaskFilters()` (`src/features/tasks/hooks/useTaskFilters.ts`). It is the single place that
+declares each key, its serializer, and its validation, and it exposes `clear()` to remove all
+filters in one update (`q` is kept). Updates use `{ replace: true }` and the functional form
+`setSearchParams(params => …)`. An empty serialized value deletes the param.
 
-`Board` and `BoardToolbar` each declare their own `useUrlParam` calls for the same keys, with
-**identical** `serialize`/`deserialize` functions. If you change one, change the other.
+**The URL is user input.** Every deserializer validates the raw string — enum values with
+`isOneOf()` from `features/tasks/enums.ts`, dates with a `NaN` check — and falls back to "no
+filter" instead of casting. Never `raw as SomeEnum`.
 
 **Protects.** `Header` and `Board` are siblings in the layout and never pass filter state to
 each other — the URL is how they communicate. It also makes filtered views linkable and keeps
@@ -35,8 +38,12 @@ them across refresh.
 **Breaks when.**
 - Someone moves a filter into `useState` or passes it down as a prop: the other reader stops
   seeing changes, and refresh/shared links lose it.
-- The serializer in `BoardToolbar` changes but the deserializer in `Board` doesn't (or the
-  reverse): the picker shows one value and the query uses another.
+- A component declares its own `useUrlParam` for a filter key instead of using
+  `useTaskFilters()`: two serializers for one key can drift, so the picker shows one value and
+  the query uses another.
+- A deserializer casts instead of validating: `?points=GARBAGE` reaches the GraphQL variables and
+  the `POINT_ESTIMATE_LABELS` lookup, and `?dueDate=garbage` produces an `Invalid Date` whose
+  `toISOString()` throws during render and takes down the route.
 - `setSearchParams` is called with a fresh object instead of the functional updater: it wipes
   the other params (e.g. setting `q` drops `tags`).
 - `replace: true` is dropped: every keystroke or filter click adds a history entry and the back
