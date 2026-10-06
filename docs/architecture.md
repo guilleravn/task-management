@@ -118,9 +118,10 @@ anyone who loads the app.
 ## Main data flows
 
 ### Search
-1. User types in `Header`; input is local state.
-2. `useDebouncedValue(input, 300)` settles → `Header` writes `?q=` (functional update,
-   `replace: true`).
+1. User types in `Header`; the input is local state and updates on every keystroke.
+2. The same `onChange` calls a `useDebouncedCallback` writer; 300 ms after the last keystroke it
+   sets `?q=` (functional update, `replace: true`). If `q` changes from outside (back button),
+   `Header` copies it into the input.
 3. `Board` reads `q` with `useSearchParams` → `GET_TASKS` variables change → Apollo sends a new
    request; skeletons show while `loading`.
 4. Tasks render grouped by `STATUS_VALUES` in `BoardColumns` (grid) or `BoardList` (list).
