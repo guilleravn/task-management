@@ -2,16 +2,23 @@ import { useSearchParams } from 'react-router-dom'
 import { useUrlParam } from '../../../hooks/useUrlParam'
 import {
   POINT_ESTIMATE_VALUES,
+  STATUS_VALUES,
   TASK_TAG_VALUES,
   isOneOf,
   type PointEstimate,
+  type Status,
   type TaskTag,
 } from '../enums'
 
 // The URL is user input: every deserializer validates and drops values it doesn't recognize
 // instead of casting them, so a hand-edited link can't reach the query or crash the board.
 
-const FILTER_KEYS = ['points', 'tags', 'dueDate', 'assigneeId']
+const FILTER_KEYS = ['status', 'points', 'tags', 'dueDate', 'assigneeId']
+
+const statusParam = {
+  serialize: (value: Status | null) => value ?? '',
+  deserialize: (raw: string | null) => (isOneOf(STATUS_VALUES, raw) ? raw : null),
+}
 
 const pointsParam = {
   serialize: (value: PointEstimate | null) => value ?? '',
@@ -42,6 +49,7 @@ const assigneeIdParam = {
 }
 
 export function useTaskFilters() {
+  const [status, setStatus] = useUrlParam('status', statusParam)
   const [points, setPoints] = useUrlParam('points', pointsParam)
   const [tags, setTags] = useUrlParam('tags', tagsParam)
   const [dueDate, setDueDate] = useUrlParam('dueDate', dueDateParam)
@@ -59,5 +67,17 @@ export function useTaskFilters() {
     )
   }
 
-  return { points, setPoints, tags, setTags, dueDate, setDueDate, assigneeId, setAssigneeId, clear }
+  return {
+    status,
+    setStatus,
+    points,
+    setPoints,
+    tags,
+    setTags,
+    dueDate,
+    setDueDate,
+    assigneeId,
+    setAssigneeId,
+    clear,
+  }
 }

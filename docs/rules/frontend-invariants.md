@@ -16,6 +16,7 @@ code.
 | Param | Written by | Read by | Format | Invalid value → |
 | --- | --- | --- | --- | --- |
 | `q` | `Header` (debounced, see R2) | `Board` | raw string | — |
+| `status` | `BoardToolbar` | `Board`, `BoardToolbar` | a `Status` value | `null` |
 | `points` | `BoardToolbar` | `Board`, `BoardToolbar` | a `PointEstimate` value | `null` |
 | `tags` | `BoardToolbar` | `Board`, `BoardToolbar` | comma-separated `TaskTag` values | unknown tags dropped, duplicates removed |
 | `dueDate` | `BoardToolbar` | `Board`, `BoardToolbar` | ISO string (`Date.toISOString()`) | `null` |
@@ -145,6 +146,12 @@ server says it is.
   `createPortal`**. Without the stop, a pointer drag inside the modal (e.g. selecting text in the
   name input) reaches the card's dnd-kit listeners and starts dragging the card behind it. The
   portal alone does not prevent this.
+
+With a `status` filter active, `Board` renders only that status's column (`visibleStatuses`), so
+the only droppable target is the column the task is already in: a drag can reorder but never
+change status. This is what keeps `useMoveTask` refetch-free (R9) — a drop can't move a task out
+of a filtered list. If other columns are ever shown alongside a status filter, a cross-column
+drop would leave a task in a list it no longer matches.
 
 Drag and drop exists only in the grid view. The list view has no DnD context.
 

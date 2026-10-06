@@ -3,6 +3,7 @@ import { ListIcon } from '../../../components/icons/ListIcon'
 import { GridIcon } from '../../../components/icons/GridIcon'
 import { AddButtonIcon } from '../../../components/icons/AddButtonIcon'
 import { ResetIcon } from '../../../components/icons/ResetIcon'
+import { StatusPicker } from './StatusPicker'
 import { EstimatePicker } from './EstimatePicker'
 import { LabelPicker } from './LabelPicker'
 import { DueDatePicker } from './DueDatePicker'
@@ -23,6 +24,8 @@ interface BoardToolbarProps {
 
 export function BoardToolbar({ onAddClick, onlyMine = false, view, onViewChange }: BoardToolbarProps) {
   const {
+    status: statusFilter,
+    setStatus: setStatusFilter,
     points: pointsFilter,
     setPoints: setPointsFilter,
     tags: tagsFilter,
@@ -43,6 +46,7 @@ export function BoardToolbar({ onAddClick, onlyMine = false, view, onViewChange 
   }
 
   const hasActiveFilters =
+    statusFilter !== null ||
     pointsFilter !== null ||
     tagsFilter.length > 0 ||
     dueDateFilter !== null ||
@@ -75,6 +79,7 @@ export function BoardToolbar({ onAddClick, onlyMine = false, view, onViewChange 
         </div>
 
         <div className={styles.filters}>
+          <StatusPicker value={statusFilter} onChange={setStatusFilter} />
           <EstimatePicker value={pointsFilter} onChange={setPointsFilter} />
           <LabelPicker value={tagsFilter} onChange={setTagsFilter} />
           <DueDatePicker value={dueDateFilter} onChange={setDueDateFilter} />

@@ -1,13 +1,14 @@
 import { BoardListGroup } from './BoardListGroup'
-import { STATUS_VALUES, STATUS_LABELS } from '../enums'
+import { STATUS_LABELS, type Status } from '../enums'
 import type { Task } from '../types'
 import styles from './BoardList.module.css'
 
 interface BoardListProps {
   tasks: Task[]
+  statuses: readonly Status[]
 }
 
-export function BoardList({ tasks }: BoardListProps) {
+export function BoardList({ tasks, statuses }: BoardListProps) {
   return (
     <div className={styles.list}>
       <div className={styles.header}>
@@ -20,7 +21,7 @@ export function BoardList({ tasks }: BoardListProps) {
         <span aria-hidden="true" />
       </div>
 
-      {STATUS_VALUES.map((status) => (
+      {statuses.map((status) => (
         <BoardListGroup
           key={status}
           title={STATUS_LABELS[status]}
