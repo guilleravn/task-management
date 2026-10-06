@@ -179,3 +179,19 @@ semicolons — and is the exception, not the norm.)
 Icon-only buttons have `aria-label`; decorative SVGs are `aria-hidden`; the search input has a
 visually-hidden `<label>`; collapsible list groups set `aria-expanded`; drag and drop registers
 a `KeyboardSensor`. Keep this level when adding UI.
+
+### Modals
+
+Every dialog goes through `components/ui/Modal`, never a hand-rolled overlay. `Modal`:
+
+- renders into `document.body` with `createPortal`;
+- sets `role="dialog"`, `aria-modal="true"` and `aria-label` from its required `ariaLabel` prop
+  (e.g. "Create task", "Edit task", "Delete task");
+- closes on Escape (a `keydown` listener on `document`, removed in the effect cleanup) and on an
+  overlay click;
+- moves focus into the dialog when it opens and returns it to the previously focused element when
+  it closes;
+- stops `pointerdown` from propagating (see invariant R5).
+
+It does not trap focus: Tab can still leave the dialog. `Popover`'s `close()` returns focus to its
+trigger, which is what a modal opened from a menu option restores focus to.

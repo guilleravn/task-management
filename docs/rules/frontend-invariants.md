@@ -133,6 +133,11 @@ server says it is.
 - Someone adds manual "undo" state on error: it fights Apollo's own rollback.
 - `PointerSensor`'s `activationConstraint: { distance: 8 }` is removed: every click on a card
   (including its options menu) starts a drag.
+- The `onPointerDown` `stopPropagation` is removed from `Modal`. The Edit and Delete modals are rendered by
+  the card's `TaskActionsMenu`, and React bubbles events along the React tree **even through
+  `createPortal`**. Without the stop, a pointer drag inside the modal (e.g. selecting text in the
+  name input) reaches the card's dnd-kit listeners and starts dragging the card behind it. The
+  portal alone does not prevent this.
 
 Drag and drop exists only in the grid view. The list view has no DnD context.
 

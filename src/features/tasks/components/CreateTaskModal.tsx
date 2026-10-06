@@ -62,7 +62,7 @@ export function CreateTaskModal({ isOpen, onClose }: CreateTaskModalProps) {
   const isCreateDisabled = name.trim() === '' || loading
 
   return (
-    <Modal isOpen={isOpen} onClose={handleCancel}>
+    <Modal isOpen={isOpen} onClose={handleCancel} ariaLabel="Create task">
       <input
         type="text"
         value={name}

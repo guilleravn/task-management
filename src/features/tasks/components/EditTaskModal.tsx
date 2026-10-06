@@ -61,7 +61,7 @@ export function EditTaskModal({ task, onClose }: EditTaskModalProps) {
   const isSaveDisabled = name.trim() === '' || loading
 
   return (
-    <Modal isOpen onClose={onClose}>
+    <Modal isOpen onClose={onClose} ariaLabel="Edit task">
       <input
         type="text"
         value={name}
